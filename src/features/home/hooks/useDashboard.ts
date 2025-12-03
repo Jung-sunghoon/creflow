@@ -181,8 +181,11 @@ export function useUpcomingEvents() {
       if (unpaidExpenses) {
         for (const expense of unpaidExpenses) {
           const daysLeft = differenceInDays(new Date(expense.date), today)
-          const collaborator = expense.collaborators as { name: string } | null
-          const title = collaborator
+          const collaboratorData = expense.collaborators as unknown
+          const collaborator = Array.isArray(collaboratorData)
+            ? (collaboratorData[0] as { name: string } | undefined)
+            : (collaboratorData as { name: string } | null)
+          const title = collaborator?.name
             ? `${collaborator.name} 정산일`
             : expense.description || '지출 예정'
 
