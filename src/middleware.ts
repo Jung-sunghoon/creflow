@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // 세션 갱신 및 사용자 확인
-  const { supabaseResponse, user } = await updateSession(request)
+  const { supabaseResponse, user, supabase } = await updateSession(request)
 
   // 공개 라우트 처리
   if (publicRoutes.some(route => pathname.startsWith(route))) {
@@ -29,6 +29,20 @@ export async function middleware(request: NextRequest) {
       const redirectUrl = new URL('/login', request.url)
       redirectUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(redirectUrl)
+    }
+
+    // 온보딩 페이지가 아닌 경우, 온보딩 완료 여부 확인
+    if (pathname !== '/onboarding') {
+      const { data: userData } = await supabase
+        .from('users')
+        .select('onboarding_completed')
+        .eq('id', user.id)
+        .single()
+
+      // 온보딩 미완료 시 온보딩 페이지로 리다이렉트
+      if (userData && !userData.onboarding_completed) {
+        return NextResponse.redirect(new URL('/onboarding', request.url))
+      }
     }
   }
 

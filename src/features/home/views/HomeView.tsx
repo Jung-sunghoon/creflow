@@ -5,57 +5,46 @@ import { ko } from 'date-fns/locale'
 import { NetIncomeCard } from '../components/NetIncomeCard'
 import { SummaryCards } from '../components/SummaryCards'
 import { UpcomingEvents } from '../components/UpcomingEvents'
-import type { UpcomingEvent } from '@/shared/types'
-
-// TODO: 실제 데이터 연동
-const mockData = {
-  netIncome: 3080000,
-  changeRate: 12.3,
-  totalIncome: 4230000,
-  totalExpense: 1150000,
-  incomeChangeRate: 8.5,
-  expenseChangeRate: 3.2,
-}
-
-const mockEvents: UpcomingEvent[] = [
-  {
-    id: '1',
-    type: 'deadline',
-    title: 'OO브랜드 영상 업로드',
-    date: '2025-12-06',
-    daysLeft: 3,
-  },
-  {
-    id: '2',
-    type: 'payment',
-    title: '편집자 김OO 정산일',
-    date: '2025-12-10',
-    daysLeft: 7,
-  },
-]
+import { DashboardSkeleton } from '../components/DashboardSkeleton'
+import { useDashboard, useUpcomingEvents } from '../hooks/useDashboard'
 
 export function HomeView() {
   const currentMonth = format(new Date(), 'M월', { locale: ko })
+  const { data: dashboard, isLoading: dashboardLoading } = useDashboard()
+  const { data: events = [], isLoading: eventsLoading } = useUpcomingEvents()
+
+  // 로딩 중일 때 스켈레톤 표시
+  if (dashboardLoading) {
+    return <DashboardSkeleton />
+  }
 
   return (
-    <div className="px-4 py-6 space-y-6">
-      {/* 순수익 카드 */}
-      <NetIncomeCard
-        month={currentMonth}
-        netIncome={mockData.netIncome}
-        changeRate={mockData.changeRate}
-      />
+    <div className="px-4 py-6 lg:px-0">
+      {/* PC: 2컬럼 그리드, 모바일: 수직 스택 */}
+      <div className="lg:grid lg:grid-cols-3 lg:gap-6 space-y-6 lg:space-y-0">
+        {/* 왼쪽 영역 - 순수익 + 수익/지출 */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* 순수익 카드 */}
+          <NetIncomeCard
+            month={currentMonth}
+            netIncome={dashboard?.netIncome ?? 0}
+            changeRate={dashboard?.changeRate ?? 0}
+          />
 
-      {/* 수익/지출 요약 카드 */}
-      <SummaryCards
-        totalIncome={mockData.totalIncome}
-        totalExpense={mockData.totalExpense}
-        incomeChangeRate={mockData.incomeChangeRate}
-        expenseChangeRate={mockData.expenseChangeRate}
-      />
+          {/* 수익/지출 요약 카드 */}
+          <SummaryCards
+            totalIncome={dashboard?.totalIncome ?? 0}
+            totalExpense={dashboard?.totalExpense ?? 0}
+            incomeChangeRate={dashboard?.incomeChangeRate ?? 0}
+            expenseChangeRate={dashboard?.expenseChangeRate ?? 0}
+          />
+        </div>
 
-      {/* 다가오는 일정 */}
-      <UpcomingEvents events={mockEvents} />
+        {/* 오른쪽 영역 - 다가오는 일정 */}
+        <div className="lg:col-span-1">
+          <UpcomingEvents events={events} isLoading={eventsLoading} />
+        </div>
+      </div>
     </div>
   )
 }

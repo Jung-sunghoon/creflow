@@ -5,18 +5,22 @@ import { format, subMonths, addMonths } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/shared/components/ui/button'
 import { IncomeCard, CampaignCard } from '../components/IncomeCard'
-import { useIncomes, useCampaigns, useUpdateCampaignStatus } from '../hooks/useIncome'
+import { useIncomes, useCampaigns, useUpdateCampaignStatus, useDeleteIncome, useDeleteCampaign } from '../hooks/useIncome'
 import { formatCurrency } from '@/shared/lib/calculations'
 
 export function IncomeListView() {
+  const router = useRouter()
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const monthString = format(currentMonth, 'yyyy-MM')
 
   const { data: incomes = [], isLoading: incomesLoading } = useIncomes(monthString)
   const { data: campaigns = [], isLoading: campaignsLoading } = useCampaigns(monthString)
   const updateCampaignStatus = useUpdateCampaignStatus()
+  const deleteIncome = useDeleteIncome()
+  const deleteCampaign = useDeleteCampaign()
 
   const isLoading = incomesLoading || campaignsLoading
 
@@ -47,13 +51,13 @@ export function IncomeListView() {
 
         {/* 월 선택 */}
         <div className="flex items-center justify-center gap-4 py-3">
-          <button onClick={handlePrevMonth} className="p-1">
+          <button onClick={handlePrevMonth} className="p-1 cursor-pointer">
             <ChevronLeft className="w-5 h-5 text-muted-foreground" />
           </button>
           <span className="text-base font-medium">
             {format(currentMonth, 'yyyy년 M월', { locale: ko })}
           </span>
-          <button onClick={handleNextMonth} className="p-1">
+          <button onClick={handleNextMonth} className="p-1 cursor-pointer">
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
         </div>
@@ -85,7 +89,12 @@ export function IncomeListView() {
                 </h2>
                 <div className="space-y-3">
                   {platformIncomes.map((income) => (
-                    <IncomeCard key={income.id} income={income} />
+                    <IncomeCard
+                      key={income.id}
+                      income={income}
+                      onEdit={() => router.push(`/income/${income.id}/edit`)}
+                      onDelete={() => deleteIncome.mutate(income.id)}
+                    />
                   ))}
                 </div>
               </section>
@@ -103,6 +112,8 @@ export function IncomeListView() {
                       key={campaign.id}
                       campaign={campaign}
                       onTogglePaid={(isPaid) => handleTogglePaid(campaign.id, isPaid)}
+                      onEdit={() => router.push(`/income/campaign/${campaign.id}/edit`)}
+                      onDelete={() => deleteCampaign.mutate(campaign.id)}
                     />
                   ))}
                 </div>

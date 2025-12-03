@@ -25,6 +25,38 @@ export async function getIncomes(
   return data || []
 }
 
+export async function getIncome(id: string): Promise<Income | null> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('incomes')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    if (error.code === 'PGRST116') return null
+    throw error
+  }
+  return data
+}
+
+export async function getCampaign(id: string): Promise<Campaign | null> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('campaigns')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    if (error.code === 'PGRST116') return null
+    throw error
+  }
+  return data
+}
+
 export async function createIncome(
   userId: string,
   data: IncomeFormData
@@ -145,4 +177,34 @@ export async function updateCampaignStatus(
 
   if (error) throw error
   return data
+}
+
+export async function updateCampaign(
+  id: string,
+  data: Partial<Campaign>
+): Promise<Campaign> {
+  const supabase = createClient()
+
+  const { data: campaign, error } = await supabase
+    .from('campaigns')
+    .update({
+      brand_name: data.brand_name,
+      amount: data.amount,
+      payment_date: data.payment_date,
+      is_paid: data.is_paid,
+    })
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) throw error
+  return campaign
+}
+
+export async function deleteCampaign(id: string): Promise<void> {
+  const supabase = createClient()
+
+  const { error } = await supabase.from('campaigns').delete().eq('id', id)
+
+  if (error) throw error
 }

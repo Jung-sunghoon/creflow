@@ -61,13 +61,13 @@ export function ReportView() {
 
         {/* 연도 선택 */}
         <div className="flex items-center justify-center gap-4 py-3">
-          <button onClick={handlePrevYear} className="p-1">
+          <button onClick={handlePrevYear} className="p-1 cursor-pointer">
             <ChevronLeft className="w-5 h-5 text-muted-foreground" />
           </button>
           <span className="text-base font-medium">{year}년</span>
           <button
             onClick={handleNextYear}
-            className="p-1"
+            className="p-1 cursor-pointer disabled:cursor-not-allowed"
             disabled={year >= currentYear}
           >
             <ChevronRight className={`w-5 h-5 ${

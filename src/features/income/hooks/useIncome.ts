@@ -4,11 +4,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createClient } from '@/shared/lib/supabase/client'
 import {
   getIncomes,
+  getIncome,
   createIncome,
   updateIncome,
   deleteIncome,
   getCampaigns,
+  getCampaign,
   updateCampaignStatus,
+  updateCampaign,
+  deleteCampaign,
 } from '../api/income'
 import type { IncomeFormData } from '@/shared/types'
 
@@ -30,6 +34,14 @@ export function useIncomes(month?: string) {
   })
 }
 
+export function useIncome(id: string) {
+  return useQuery({
+    queryKey: ['income', id],
+    queryFn: () => getIncome(id),
+    enabled: !!id,
+  })
+}
+
 export function useCampaigns(month?: string) {
   return useQuery({
     queryKey: ['campaigns', month],
@@ -38,6 +50,14 @@ export function useCampaigns(month?: string) {
       if (!userId) return []
       return getCampaigns(userId, month)
     },
+  })
+}
+
+export function useCampaign(id: string) {
+  return useQuery({
+    queryKey: ['campaign', id],
+    queryFn: () => getCampaign(id),
+    enabled: !!id,
   })
 }
 
@@ -50,9 +70,13 @@ export function useCreateIncome() {
       if (!userId) throw new Error('로그인이 필요합니다')
       return createIncome(userId, data)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['incomes'] })
-      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: ['incomes'] }),
+        queryClient.refetchQueries({ queryKey: ['campaigns'] }),
+        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
+        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
+      ])
     },
   })
 }
@@ -63,8 +87,12 @@ export function useUpdateIncome() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<IncomeFormData> }) =>
       updateIncome(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['incomes'] })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: ['incomes'] }),
+        queryClient.refetchQueries({ queryKey: ['income'] }),
+        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
+      ])
     },
   })
 }
@@ -74,8 +102,35 @@ export function useDeleteIncome() {
 
   return useMutation({
     mutationFn: (id: string) => deleteIncome(id),
-    onSuccess: () => {
+    onMutate: async (id) => {
+      // 진행 중인 refetch 취소
+      await queryClient.cancelQueries({ queryKey: ['incomes'] })
+
+      // 이전 데이터 저장 (롤백용)
+      const previousIncomes = queryClient.getQueriesData({ queryKey: ['incomes'] })
+
+      // 옵티미스틱 업데이트: 캐시에서 해당 아이템 즉시 제거
+      queryClient.setQueriesData({ queryKey: ['incomes'] }, (old: unknown) => {
+        if (Array.isArray(old)) {
+          return old.filter((item: { id: string }) => item.id !== id)
+        }
+        return old
+      })
+
+      return { previousIncomes }
+    },
+    onError: (_err, _id, context) => {
+      // 실패 시 롤백
+      if (context?.previousIncomes) {
+        context.previousIncomes.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data)
+        })
+      }
+    },
+    onSettled: () => {
+      // 성공/실패 상관없이 캐시 갱신
       queryClient.invalidateQueries({ queryKey: ['incomes'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     },
   })
 }
@@ -86,8 +141,85 @@ export function useUpdateCampaignStatus() {
   return useMutation({
     mutationFn: ({ id, isPaid }: { id: string; isPaid: boolean }) =>
       updateCampaignStatus(id, isPaid),
-    onSuccess: () => {
+    onMutate: async ({ id, isPaid }) => {
+      await queryClient.cancelQueries({ queryKey: ['campaigns'] })
+
+      const previousCampaigns = queryClient.getQueriesData({ queryKey: ['campaigns'] })
+
+      queryClient.setQueriesData({ queryKey: ['campaigns'] }, (old: unknown) => {
+        if (Array.isArray(old)) {
+          return old.map((item: { id: string; is_paid: boolean }) =>
+            item.id === id ? { ...item, is_paid: isPaid } : item
+          )
+        }
+        return old
+      })
+
+      return { previousCampaigns }
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.previousCampaigns) {
+        context.previousCampaigns.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data)
+        })
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] })
+      queryClient.invalidateQueries({ queryKey: ['campaign'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
+    },
+  })
+}
+
+export function useUpdateCampaign() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Parameters<typeof updateCampaign>[1] }) =>
+      updateCampaign(id, data),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: ['campaigns'] }),
+        queryClient.refetchQueries({ queryKey: ['campaign'] }),
+        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
+        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
+      ])
+    },
+  })
+}
+
+export function useDeleteCampaign() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) => deleteCampaign(id),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ['campaigns'] })
+
+      const previousCampaigns = queryClient.getQueriesData({ queryKey: ['campaigns'] })
+
+      queryClient.setQueriesData({ queryKey: ['campaigns'] }, (old: unknown) => {
+        if (Array.isArray(old)) {
+          return old.filter((item: { id: string }) => item.id !== id)
+        }
+        return old
+      })
+
+      return { previousCampaigns }
+    },
+    onError: (_err, _id, context) => {
+      if (context?.previousCampaigns) {
+        context.previousCampaigns.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data)
+        })
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
     },
   })
 }

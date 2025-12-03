@@ -3,6 +3,7 @@
 import { Card } from '@/shared/components/ui/card'
 import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
+import { DeleteConfirmDialog } from '@/shared/components/ui/delete-confirm-dialog'
 import { Trash2 } from 'lucide-react'
 import { formatCurrency } from '@/shared/lib/calculations'
 import type { Collaborator } from '@/shared/types'
@@ -40,14 +41,19 @@ export function CollaboratorCard({ collaborator, onDelete }: CollaboratorCardPro
           </div>
         </div>
         {onDelete && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onDelete}
-            className="text-muted-foreground hover:text-destructive"
+          <DeleteConfirmDialog
+            title={`${collaborator.name} 협력자를 삭제하시겠습니까?`}
+            description="삭제된 협력자 정보는 복구할 수 없습니다."
+            onConfirm={onDelete}
           >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </DeleteConfirmDialog>
         )}
       </div>
     </Card>

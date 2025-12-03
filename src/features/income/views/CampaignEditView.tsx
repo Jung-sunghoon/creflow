@@ -1,0 +1,60 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { ChevronLeft } from 'lucide-react'
+import { CampaignForm } from '../components/CampaignForm'
+import { useCampaign } from '../hooks/useIncome'
+
+interface CampaignEditViewProps {
+  campaignId: string
+}
+
+export function CampaignEditView({ campaignId }: CampaignEditViewProps) {
+  const router = useRouter()
+  const { data: campaign, isLoading } = useCampaign(campaignId)
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="flex items-center justify-center py-12">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      </div>
+    )
+  }
+
+  if (!campaign) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <p className="text-muted-foreground mb-4">광고/협찬을 찾을 수 없습니다</p>
+          <button
+            onClick={() => router.back()}
+            className="text-primary underline cursor-pointer"
+          >
+            뒤로 가기
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* 헤더 */}
+      <div className="sticky top-0 z-10 bg-background border-b">
+        <div className="flex items-center px-4 py-3">
+          <button onClick={() => router.back()} className="mr-3 cursor-pointer">
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <h1 className="text-lg font-semibold">광고/협찬 수정</h1>
+        </div>
+      </div>
+
+      {/* 폼 */}
+      <div className="p-4">
+        <CampaignForm campaign={campaign} />
+      </div>
+    </div>
+  )
+}

@@ -25,6 +25,22 @@ export async function getExpenses(
   return data || []
 }
 
+export async function getExpense(id: string): Promise<Expense | null> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('expenses')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    if (error.code === 'PGRST116') return null
+    throw error
+  }
+  return data
+}
+
 export async function createExpense(
   userId: string,
   data: ExpenseFormData

@@ -14,10 +14,11 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import { Switch } from '@/shared/components/ui/switch'
+import { DatePicker } from '@/shared/components/ui/date-picker'
 import { formatCurrency } from '@/shared/lib/calculations'
-import { useCreateExpense } from '../hooks/useExpense'
+import { useCreateExpense, useUpdateExpense } from '../hooks/useExpense'
 import { useCollaborators } from '@/features/collaborator/hooks/useCollaborator'
-import type { ExpenseType } from '@/shared/types'
+import type { Expense, ExpenseType } from '@/shared/types'
 import { toast } from 'sonner'
 
 const expenseTypes: { value: ExpenseType; label: string }[] = [
@@ -25,44 +26,58 @@ const expenseTypes: { value: ExpenseType; label: string }[] = [
   { value: 'other', label: '기타 지출' },
 ]
 
-export function ExpenseForm() {
+interface ExpenseFormProps {
+  expense?: Expense // 수정 모드일 때 기존 데이터
+}
+
+export function ExpenseForm({ expense }: ExpenseFormProps) {
   const router = useRouter()
   const createExpense = useCreateExpense()
+  const updateExpense = useUpdateExpense()
   const { data: collaborators = [] } = useCollaborators()
 
-  const [type, setType] = useState<ExpenseType | ''>('')
-  const [collaboratorId, setCollaboratorId] = useState('')
-  const [description, setDescription] = useState('')
-  const [amount, setAmount] = useState('')
-  const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-  const [isPaid, setIsPaid] = useState(false)
-  const [memo, setMemo] = useState('')
+  const isEditMode = !!expense
+
+  const [type, setType] = useState<ExpenseType | ''>(expense?.type || '')
+  const [collaboratorId, setCollaboratorId] = useState(expense?.collaborator_id || '')
+  const [description, setDescription] = useState(expense?.description || '')
+  const [amount, setAmount] = useState(expense?.amount?.toString() || '')
+  const [date, setDate] = useState<Date>(expense?.date ? new Date(expense.date) : new Date())
+  const [isPaid, setIsPaid] = useState(expense?.is_paid || false)
+  const [memo, setMemo] = useState(expense?.memo || '')
 
   const isCollaboratorType = type === 'collaborator'
   const canSubmit = type && amount && date && (isCollaboratorType ? collaboratorId : description)
+  const isPending = createExpense.isPending || updateExpense.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!type || !amount) return
 
-    try {
-      await createExpense.mutateAsync({
-        type: type as ExpenseType,
-        collaborator_id: isCollaboratorType ? collaboratorId : undefined,
-        description: isCollaboratorType
-          ? collaborators.find(c => c.id === collaboratorId)?.name
-          : description,
-        amount: Number(amount),
-        date,
-        is_paid: isPaid,
-        memo: memo || undefined,
-      })
+    const formData = {
+      type: type as ExpenseType,
+      collaborator_id: isCollaboratorType ? collaboratorId : undefined,
+      description: isCollaboratorType
+        ? collaborators.find(c => c.id === collaboratorId)?.name
+        : description,
+      amount: Number(amount),
+      date: format(date, 'yyyy-MM-dd'),
+      is_paid: isPaid,
+      memo: memo || undefined,
+    }
 
-      toast.success('지출이 등록되었습니다')
+    try {
+      if (isEditMode && expense) {
+        await updateExpense.mutateAsync({ id: expense.id, data: formData })
+        toast.success('지출이 수정되었습니다')
+      } else {
+        await createExpense.mutateAsync(formData)
+        toast.success('지출이 등록되었습니다')
+      }
       router.push('/expense')
     } catch (error) {
-      toast.error('등록에 실패했습니다')
+      toast.error(isEditMode ? '수정에 실패했습니다' : '등록에 실패했습니다')
       console.error(error)
     }
   }
@@ -148,10 +163,10 @@ export function ExpenseForm() {
       {/* 날짜 */}
       <div className="space-y-2">
         <Label>지급일</Label>
-        <Input
-          type="date"
+        <DatePicker
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(d) => d && setDate(d)}
+          placeholder="날짜를 선택하세요"
         />
       </div>
 
@@ -175,9 +190,9 @@ export function ExpenseForm() {
       <Button
         type="submit"
         className="w-full"
-        disabled={!canSubmit || createExpense.isPending}
+        disabled={!canSubmit || isPending}
       >
-        {createExpense.isPending ? '저장 중...' : '저장하기'}
+        {isPending ? '저장 중...' : isEditMode ? '수정하기' : '저장하기'}
       </Button>
     </form>
   )

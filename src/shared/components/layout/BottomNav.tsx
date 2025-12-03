@@ -29,7 +29,7 @@ export function BottomNav() {
                 <Link
                   href={href}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-lg transition-colors',
+                    'flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-lg transition-colors cursor-pointer',
                     isActive
                       ? 'text-neutral-900'
                       : 'text-neutral-400 hover:text-neutral-600'

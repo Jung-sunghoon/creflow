@@ -14,9 +14,7 @@ export function CollaboratorSettings() {
   const deleteCollaborator = useDeleteCollaborator()
   const [showForm, setShowForm] = useState(false)
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`${name} 협력자를 삭제하시겠습니까?`)) return
-
+  const handleDelete = async (id: string) => {
     try {
       await deleteCollaborator.mutateAsync(id)
       toast.success('협력자가 삭제되었습니다')
@@ -60,7 +58,7 @@ export function CollaboratorSettings() {
             <CollaboratorCard
               key={collaborator.id}
               collaborator={collaborator}
-              onDelete={() => handleDelete(collaborator.id, collaborator.name)}
+              onDelete={() => handleDelete(collaborator.id)}
             />
           ))}
         </div>

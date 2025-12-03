@@ -3,12 +3,19 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/shared/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/shared/components/ui/sheet'
 import { createClient } from '@/shared/lib/supabase/client'
 import { PlatformStep } from '../components/PlatformStep'
 import { TierStep } from '../components/TierStep'
 import { CollaboratorStep } from '../components/CollaboratorStep'
 import { CompleteStep } from '../components/CompleteStep'
-import type { PlatformType, SoopTier, ChzzkTier } from '@/shared/types'
+import { CollaboratorForm } from '@/features/collaborator/components/CollaboratorForm'
+import type { PlatformType, SoopTier, ChzzkTier, Collaborator } from '@/shared/types'
 
 type Step = 'platform' | 'tier' | 'collaborator' | 'complete'
 
@@ -23,6 +30,8 @@ export function OnboardingView() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<PlatformType[]>([])
   const [tierSettings, setTierSettings] = useState<TierSettings>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [isCollaboratorSheetOpen, setIsCollaboratorSheetOpen] = useState(false)
+  const [addedCollaborators, setAddedCollaborators] = useState<string[]>([])
 
   const handlePlatformToggle = (platform: PlatformType) => {
     setSelectedPlatforms((prev) =>
@@ -80,16 +89,51 @@ export function OnboardingView() {
   }
 
   const handleAddCollaborator = () => {
-    // TODO: 협력자 추가 모달/페이지
-    setStep('complete')
+    setIsCollaboratorSheetOpen(true)
+  }
+
+  const handleCollaboratorSuccess = () => {
+    setIsCollaboratorSheetOpen(false)
+    setAddedCollaborators((prev) => [...prev, '협력자'])
   }
 
   const handleSkipCollaborator = () => {
     setStep('complete')
   }
 
-  const handleComplete = () => {
-    router.push('/')
+  const handleContinueToComplete = () => {
+    setStep('complete')
+  }
+
+  const handleComplete = async () => {
+    setIsLoading(true)
+
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push('/login')
+        return
+      }
+
+      // 온보딩 완료 플래그 업데이트
+      const { error } = await supabase
+        .from('users')
+        .update({ onboarding_completed: true })
+        .eq('id', user.id)
+
+      if (error) {
+        console.error('온보딩 완료 저장 오류:', error)
+      }
+
+      router.push('/')
+    } catch (error) {
+      console.error('온보딩 완료 오류:', error)
+      router.push('/')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleBack = () => {
@@ -151,11 +195,25 @@ export function OnboardingView() {
           <CollaboratorStep
             onAddCollaborator={handleAddCollaborator}
             onSkip={handleSkipCollaborator}
+            onContinue={handleContinueToComplete}
+            addedCount={addedCollaborators.length}
           />
         )}
 
-        {step === 'complete' && <CompleteStep onComplete={handleComplete} />}
+        {step === 'complete' && (
+          <CompleteStep onComplete={handleComplete} isLoading={isLoading} />
+        )}
       </div>
+
+      {/* 협력자 추가 Sheet */}
+      <Sheet open={isCollaboratorSheetOpen} onOpenChange={setIsCollaboratorSheetOpen}>
+        <SheetContent side="bottom" className="h-[90vh] rounded-t-2xl">
+          <SheetHeader className="mb-6">
+            <SheetTitle>협력자 추가</SheetTitle>
+          </SheetHeader>
+          <CollaboratorForm onSuccess={handleCollaboratorSuccess} />
+        </SheetContent>
+      </Sheet>
 
       {/* 하단 버튼 */}
       {step !== 'collaborator' && step !== 'complete' && (

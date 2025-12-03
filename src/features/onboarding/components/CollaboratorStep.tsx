@@ -1,14 +1,23 @@
 'use client'
 
 import { Button } from '@/shared/components/ui/button'
-import { Users } from 'lucide-react'
+import { Users, Plus, Check } from 'lucide-react'
 
 interface CollaboratorStepProps {
   onAddCollaborator: () => void
   onSkip: () => void
+  onContinue?: () => void
+  addedCount?: number
 }
 
-export function CollaboratorStep({ onAddCollaborator, onSkip }: CollaboratorStepProps) {
+export function CollaboratorStep({
+  onAddCollaborator,
+  onSkip,
+  onContinue,
+  addedCount = 0
+}: CollaboratorStepProps) {
+  const hasCollaborators = addedCount > 0
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
@@ -18,30 +27,56 @@ export function CollaboratorStep({ onAddCollaborator, onSkip }: CollaboratorStep
         </p>
       </div>
 
-      <div className="flex flex-col items-center justify-center py-8">
-        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-          <Users className="w-8 h-8 text-muted-foreground" />
+      {hasCollaborators ? (
+        <div className="flex flex-col items-center justify-center py-8">
+          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+            <Check className="w-8 h-8 text-green-600" />
+          </div>
+          <p className="text-sm text-foreground font-medium mb-1">
+            {addedCount}명의 협력자가 등록되었어요
+          </p>
+          <p className="text-xs text-muted-foreground text-center">
+            더 추가하거나 다음 단계로 이동하세요
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground text-center">
-          협력자를 등록하면 인건비를 관리하고<br />
-          순수익을 정확하게 계산할 수 있어요
-        </p>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-8">
+          <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+            <Users className="w-8 h-8 text-muted-foreground" />
+          </div>
+          <p className="text-sm text-muted-foreground text-center">
+            협력자를 등록하면 인건비를 관리하고<br />
+            순수익을 정확하게 계산할 수 있어요
+          </p>
+        </div>
+      )}
 
       <div className="space-y-3">
         <Button
+          variant={hasCollaborators ? 'outline' : 'default'}
           className="w-full"
           onClick={onAddCollaborator}
         >
-          협력자 추가하기
+          <Plus className="w-4 h-4 mr-2" />
+          {hasCollaborators ? '협력자 더 추가하기' : '협력자 추가하기'}
         </Button>
-        <Button
-          variant="ghost"
-          className="w-full text-muted-foreground"
-          onClick={onSkip}
-        >
-          나중에 할게요
-        </Button>
+
+        {hasCollaborators ? (
+          <Button
+            className="w-full"
+            onClick={onContinue}
+          >
+            다음
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            className="w-full text-muted-foreground"
+            onClick={onSkip}
+          >
+            나중에 할게요
+          </Button>
+        )}
       </div>
     </div>
   )

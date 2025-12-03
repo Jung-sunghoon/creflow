@@ -5,17 +5,20 @@ import { format, subMonths, addMonths } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/shared/components/ui/button'
 import { ExpenseCard } from '../components/ExpenseCard'
-import { useExpenses, useUpdateExpenseStatus } from '../hooks/useExpense'
+import { useExpenses, useUpdateExpenseStatus, useDeleteExpense } from '../hooks/useExpense'
 import { formatCurrency } from '@/shared/lib/calculations'
 
 export function ExpenseListView() {
+  const router = useRouter()
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const monthString = format(currentMonth, 'yyyy-MM')
 
   const { data: expenses = [], isLoading } = useExpenses(monthString)
   const updateExpenseStatus = useUpdateExpenseStatus()
+  const deleteExpense = useDeleteExpense()
 
   const handlePrevMonth = () => setCurrentMonth(subMonths(currentMonth, 1))
   const handleNextMonth = () => setCurrentMonth(addMonths(currentMonth, 1))
@@ -45,13 +48,13 @@ export function ExpenseListView() {
 
         {/* 월 선택 */}
         <div className="flex items-center justify-center gap-4 py-3">
-          <button onClick={handlePrevMonth} className="p-1">
+          <button onClick={handlePrevMonth} className="p-1 cursor-pointer">
             <ChevronLeft className="w-5 h-5 text-muted-foreground" />
           </button>
           <span className="text-base font-medium">
             {format(currentMonth, 'yyyy년 M월', { locale: ko })}
           </span>
-          <button onClick={handleNextMonth} className="p-1">
+          <button onClick={handleNextMonth} className="p-1 cursor-pointer">
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
         </div>
@@ -87,6 +90,8 @@ export function ExpenseListView() {
                       key={expense.id}
                       expense={expense}
                       onTogglePaid={(isPaid) => handleTogglePaid(expense.id, isPaid)}
+                      onEdit={() => router.push(`/expense/${expense.id}/edit`)}
+                      onDelete={() => deleteExpense.mutate(expense.id)}
                     />
                   ))}
                 </div>
@@ -105,6 +110,8 @@ export function ExpenseListView() {
                       key={expense.id}
                       expense={expense}
                       onTogglePaid={(isPaid) => handleTogglePaid(expense.id, isPaid)}
+                      onEdit={() => router.push(`/expense/${expense.id}/edit`)}
+                      onDelete={() => deleteExpense.mutate(expense.id)}
                     />
                   ))}
                 </div>

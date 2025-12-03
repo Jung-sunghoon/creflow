@@ -34,6 +34,7 @@ export interface User {
   email: string
   name: string | null
   avatar_url: string | null
+  onboarding_completed: boolean
   created_at: string
   updated_at: string
 }
@@ -169,7 +170,9 @@ export interface DashboardSummary {
   totalExpense: number
   netIncome: number
   previousMonthNetIncome: number
-  changeRate: number // 전월 대비 증감률 (%)
+  changeRate: number // 전월 대비 순수익 증감률 (%)
+  incomeChangeRate: number // 전월 대비 수익 증감률 (%)
+  expenseChangeRate: number // 전월 대비 지출 증감률 (%)
 }
 
 // 다가오는 일정

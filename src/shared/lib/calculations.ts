@@ -80,25 +80,27 @@ export function calculateChzzkIncome(
 }
 
 /**
- * 유튜브 수익 계산 (이미 정산된 금액에서 역산)
- * @param netAmount 정산받은 금액 (실수령액)
+ * 유튜브 수익 계산
+ * 유튜브 스튜디오에 표시된 정산 금액 입력 → 이미 수수료 차감된 상태이므로 그대로 사용
+ * @param settlementAmount 유튜브 스튜디오 정산 금액 (수수료 차감 후)
  * @param incomeType 수익 유형
  */
-export function calculateYoutubeIncomeFromNet(
-  netAmount: number,
+export function calculateYoutubeIncome(
+  settlementAmount: number,
   incomeType: YoutubeIncomeType
 ): CalculationResult {
   const commissionRate = YOUTUBE_COMMISSION_RATES[incomeType]
-  // 역산: netAmount = rawAmount * (1 - commissionRate/100)
-  const rawAmount = Math.round(netAmount / (1 - commissionRate / 100))
-  const commissionAmount = rawAmount - netAmount
+  // 유튜브 정산 금액은 이미 수수료가 차감된 금액
+  // 원본 금액 역산: settlementAmount = rawAmount * (1 - commissionRate/100)
+  const rawAmount = Math.round(settlementAmount / (1 - commissionRate / 100))
+  const commissionAmount = rawAmount - settlementAmount
 
   return {
     rawAmount,
     commissionRate,
     commissionAmount,
-    withholdingTax: 0, // 유튜브는 이미 처리됨
-    netAmount,
+    withholdingTax: 0, // 유튜브는 해외 결제로 원천징수 없음
+    netAmount: settlementAmount, // 정산 금액 = 실수령액
   }
 }
 

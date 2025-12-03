@@ -7,42 +7,68 @@ import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
 import { Switch } from '@/shared/components/ui/switch'
+import { DatePicker } from '@/shared/components/ui/date-picker'
 import { formatCurrency } from '@/shared/lib/calculations'
-import { useCreateIncome } from '../hooks/useIncome'
+import { useCreateIncome, useUpdateCampaign } from '../hooks/useIncome'
+import type { Campaign } from '@/shared/types'
 import { toast } from 'sonner'
 
-export function CampaignForm() {
+interface CampaignFormProps {
+  campaign?: Campaign
+}
+
+export function CampaignForm({ campaign }: CampaignFormProps) {
   const router = useRouter()
   const createIncome = useCreateIncome()
+  const updateCampaign = useUpdateCampaign()
 
-  const [brandName, setBrandName] = useState('')
-  const [amount, setAmount] = useState('')
-  const [paymentDate, setPaymentDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-  const [isPaid, setIsPaid] = useState(false)
+  const isEditMode = !!campaign
+
+  const [brandName, setBrandName] = useState(campaign?.brand_name || '')
+  const [amount, setAmount] = useState(campaign?.amount?.toString() || '')
+  const [paymentDate, setPaymentDate] = useState<Date>(
+    campaign?.payment_date ? new Date(campaign.payment_date) : new Date()
+  )
+  const [isPaid, setIsPaid] = useState(campaign?.is_paid || false)
   const [memo, setMemo] = useState('')
 
   const canSubmit = brandName && amount && paymentDate
+  const isPending = createIncome.isPending || updateCampaign.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!brandName || !amount) return
 
-    try {
-      await createIncome.mutateAsync({
-        type: 'ad',
-        brand_name: brandName,
-        amount: Number(amount),
-        date: paymentDate,
-        payment_date: paymentDate,
-        is_paid: isPaid,
-        memo: memo || undefined,
-      })
+    const dateStr = format(paymentDate, 'yyyy-MM-dd')
 
-      toast.success('광고/협찬이 등록되었습니다')
+    try {
+      if (isEditMode && campaign) {
+        await updateCampaign.mutateAsync({
+          id: campaign.id,
+          data: {
+            brand_name: brandName,
+            amount: Number(amount),
+            payment_date: dateStr,
+            is_paid: isPaid,
+          },
+        })
+        toast.success('광고/협찬이 수정되었습니다')
+      } else {
+        await createIncome.mutateAsync({
+          type: 'ad',
+          brand_name: brandName,
+          amount: Number(amount),
+          date: dateStr,
+          payment_date: dateStr,
+          is_paid: isPaid,
+          memo: memo || undefined,
+        })
+        toast.success('광고/협찬이 등록되었습니다')
+      }
       router.push('/income')
     } catch (error) {
-      toast.error('등록에 실패했습니다')
+      toast.error(isEditMode ? '수정에 실패했습니다' : '등록에 실패했습니다')
       console.error(error)
     }
   }
@@ -84,10 +110,10 @@ export function CampaignForm() {
       {/* 정산 예정일 */}
       <div className="space-y-2">
         <Label>정산 예정일</Label>
-        <Input
-          type="date"
+        <DatePicker
           value={paymentDate}
-          onChange={(e) => setPaymentDate(e.target.value)}
+          onChange={(d) => d && setPaymentDate(d)}
+          placeholder="날짜를 선택하세요"
         />
       </div>
 
@@ -98,22 +124,24 @@ export function CampaignForm() {
       </div>
 
       {/* 메모 */}
-      <div className="space-y-2">
-        <Label>메모 (선택)</Label>
-        <Input
-          value={memo}
-          onChange={(e) => setMemo(e.target.value)}
-          placeholder="메모를 입력하세요"
-        />
-      </div>
+      {!isEditMode && (
+        <div className="space-y-2">
+          <Label>메모 (선택)</Label>
+          <Input
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+            placeholder="메모를 입력하세요"
+          />
+        </div>
+      )}
 
       {/* 제출 버튼 */}
       <Button
         type="submit"
         className="w-full"
-        disabled={!canSubmit || createIncome.isPending}
+        disabled={!canSubmit || isPending}
       >
-        {createIncome.isPending ? '저장 중...' : '저장하기'}
+        {isPending ? '저장 중...' : isEditMode ? '수정하기' : '저장하기'}
       </Button>
     </form>
   )

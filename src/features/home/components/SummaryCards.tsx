@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Card } from '@/shared/components/ui/card'
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingUp, TrendingDown, Minus, Plus } from 'lucide-react'
 import { formatCurrency, formatPercent } from '@/shared/lib/calculations'
 import { cn } from '@/shared/lib/utils'
 
@@ -14,11 +14,19 @@ interface SummaryCardProps {
 
 function SummaryCard({ type, amount, changeRate }: SummaryCardProps) {
   const isIncome = type === 'income'
-  const isPositive = changeRate >= 0
-  const Icon = isIncome ? TrendingUp : TrendingDown
+
+  // 수익: 증가=좋음(green), 감소=나쁨(red)
+  // 지출: 증가=나쁨(red), 감소=좋음(green)
+  const isGood = isIncome
+    ? changeRate > 0  // 수익 증가는 좋음
+    : changeRate < 0  // 지출 감소는 좋음
+  const isBad = isIncome
+    ? changeRate < 0  // 수익 감소는 나쁨
+    : changeRate > 0  // 지출 증가는 나쁨
+  const isNeutral = changeRate === 0
 
   return (
-    <Link href={isIncome ? '/income' : '/expense'}>
+    <Link href={isIncome ? '/income' : '/expense'} className="cursor-pointer">
       <Card className="p-4 bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center gap-3">
           <div
@@ -27,29 +35,32 @@ function SummaryCard({ type, amount, changeRate }: SummaryCardProps) {
               isIncome ? 'bg-blue-50' : 'bg-red-50'
             )}
           >
-            <Icon
-              className={cn(
-                'w-5 h-5',
-                isIncome ? 'text-blue-600' : 'text-red-600'
-              )}
-            />
+            {isIncome ? (
+              <Plus className="w-5 h-5 text-blue-600" />
+            ) : (
+              <Minus className="w-5 h-5 text-red-600" />
+            )}
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <p className="text-xs text-neutral-500">
               {isIncome ? '수익' : '지출'}
             </p>
-            <p className="text-lg font-semibold text-neutral-900">
+            <p className="text-lg font-semibold text-neutral-900 truncate">
               {formatCurrency(amount)}
             </p>
           </div>
-          <span
+          <div
             className={cn(
-              'text-xs font-medium',
-              isPositive ? 'text-green-600' : 'text-red-600'
+              'flex items-center gap-0.5 text-xs font-medium shrink-0',
+              isGood && 'text-green-600',
+              isBad && 'text-red-600',
+              isNeutral && 'text-neutral-500'
             )}
           >
-            {formatPercent(changeRate)}
-          </span>
+            {changeRate > 0 && <TrendingUp className="w-3 h-3" />}
+            {changeRate < 0 && <TrendingDown className="w-3 h-3" />}
+            <span>{formatPercent(changeRate)}</span>
+          </div>
         </div>
       </Card>
     </Link>

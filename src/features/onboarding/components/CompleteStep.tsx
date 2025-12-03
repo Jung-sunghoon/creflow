@@ -5,9 +5,10 @@ import { CheckCircle } from 'lucide-react'
 
 interface CompleteStepProps {
   onComplete: () => void
+  isLoading?: boolean
 }
 
-export function CompleteStep({ onComplete }: CompleteStepProps) {
+export function CompleteStep({ onComplete, isLoading = false }: CompleteStepProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col items-center justify-center py-8">
@@ -23,8 +24,9 @@ export function CompleteStep({ onComplete }: CompleteStepProps) {
       <Button
         className="w-full"
         onClick={onComplete}
+        disabled={isLoading}
       >
-        시작하기
+        {isLoading ? '저장 중...' : '시작하기'}
       </Button>
     </div>
   )
