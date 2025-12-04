@@ -128,7 +128,7 @@ export function LoginView() {
       {/* 슬라이드 영역 */}
       <div className={`flex-1 flex flex-col items-center justify-center px-6 transition-all duration-300 ${fadeIn ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         {/* 미니 UI 영역 */}
-        <div className="w-full max-w-sm lg:max-w-lg h-64 lg:h-80 mb-8 animate-float">
+        <div className="w-full max-w-sm lg:max-w-lg h-80 lg:h-96 mb-8 animate-float">
           <SlideComponent key={currentSlide} />
         </div>
 

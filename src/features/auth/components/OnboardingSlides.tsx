@@ -21,18 +21,18 @@ export function IncomeListSlide() {
   ]
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
-      <p className="text-xs text-neutral-500 mb-3">12월 수익</p>
-      <div className="space-y-2">
+    <div className="w-full h-full bg-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+      <p className="text-sm text-neutral-500 mb-3">12월 수익</p>
+      <div className="space-y-2.5">
         {incomes.map((income, index) => (
           <div
             key={income.platform}
             className={`flex items-center gap-3 p-3 bg-neutral-50 rounded-lg transition-all duration-500 ${
               visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
             }`}
-            style={{ transitionDelay: `${index * 150}ms` }}
+            style={{ transitionDelay: `${index * 100}ms` }}
           >
-            <div className={`w-8 h-8 ${income.color} rounded-full flex items-center justify-center`}>
+            <div className={`w-9 h-9 ${income.color} rounded-full flex items-center justify-center`}>
               <Plus className="w-4 h-4 text-white" />
             </div>
             <div className="flex-1">
@@ -58,21 +58,22 @@ export function CollaboratorSlide() {
   const expenses = [
     { name: '편집자 김OO', amount: '₩300,000', status: '정산 완료' },
     { name: '썸네일 박OO', amount: '₩150,000', status: '정산 예정' },
+    { name: '매니저 이OO', amount: '₩200,000', status: '정산 완료' },
   ]
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
-      <p className="text-xs text-neutral-500 mb-3">팀 정산</p>
-      <div className="space-y-2">
+    <div className="w-full h-full bg-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+      <p className="text-sm text-neutral-500 mb-3">팀 정산</p>
+      <div className="space-y-3">
         {expenses.map((expense, index) => (
           <div
             key={expense.name}
-            className={`flex items-center gap-3 p-3 bg-neutral-50 rounded-lg transition-all duration-500 ${
+            className={`flex items-center gap-3 p-3.5 bg-neutral-50 rounded-lg transition-all duration-500 ${
               visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
             }`}
             style={{ transitionDelay: `${index * 150}ms` }}
           >
-            <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+            <div className="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center">
               <Minus className="w-4 h-4 text-red-600" />
             </div>
             <div className="flex-1">
@@ -122,27 +123,27 @@ export function DashboardSlide() {
   }
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col justify-center">
+    <div className="w-full h-full bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col justify-center">
       <div className={`text-center transition-all duration-500 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-        <p className="text-xs text-neutral-500 mb-2">12월 순수익</p>
-        <p className="text-3xl lg:text-4xl font-bold text-neutral-900">
+        <p className="text-sm text-neutral-500 mb-2">12월 순수익</p>
+        <p className="text-4xl lg:text-5xl font-bold text-neutral-900">
           ₩{formatNumber(count)}
         </p>
-        <div className="flex items-center justify-center gap-1 mt-2">
-          <span className="text-xs text-green-600">↑ 전월 대비</span>
-          <span className="text-xs font-semibold text-green-600">+23.5%</span>
+        <div className="flex items-center justify-center gap-1 mt-3">
+          <span className="text-sm text-green-600">↑ 전월 대비</span>
+          <span className="text-sm font-semibold text-green-600">+23.5%</span>
         </div>
       </div>
 
       {/* 미니 수익/지출 카드 */}
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        <div className={`bg-blue-50 rounded-lg p-2 text-center transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '200ms' }}>
-          <p className="text-xs text-neutral-500">수익</p>
-          <p className="text-sm font-semibold text-blue-600">₩3,801,000</p>
+      <div className="grid grid-cols-2 gap-3 mt-6">
+        <div className={`bg-blue-50 rounded-xl p-4 text-center transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '200ms' }}>
+          <p className="text-sm text-neutral-500">수익</p>
+          <p className="text-lg font-semibold text-blue-600">₩3,801,000</p>
         </div>
-        <div className={`bg-red-50 rounded-lg p-2 text-center transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '350ms' }}>
-          <p className="text-xs text-neutral-500">지출</p>
-          <p className="text-sm font-semibold text-red-600">₩450,000</p>
+        <div className={`bg-red-50 rounded-xl p-4 text-center transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '350ms' }}>
+          <p className="text-sm text-neutral-500">지출</p>
+          <p className="text-lg font-semibold text-red-600">₩450,000</p>
         </div>
       </div>
     </div>
@@ -159,16 +160,16 @@ export function LoginSlide() {
   }, [])
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center justify-center">
       <div
-        className={`w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500 ${
+        className={`w-20 h-20 lg:w-24 lg:h-24 bg-blue-600 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500 ${
           visible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
         }`}
       >
-        <span className="text-2xl font-bold text-white">₩</span>
+        <span className="text-3xl lg:text-4xl font-bold text-white">₩</span>
       </div>
       <h1
-        className={`text-3xl font-bold text-neutral-900 transition-all duration-500 ${
+        className={`text-4xl lg:text-5xl font-bold text-neutral-900 transition-all duration-500 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}
         style={{ transitionDelay: '150ms' }}
@@ -176,7 +177,7 @@ export function LoginSlide() {
         CreFlow
       </h1>
       <p
-        className={`text-neutral-500 text-sm mt-2 transition-all duration-500 ${
+        className={`text-neutral-500 text-base lg:text-lg mt-3 transition-all duration-500 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}
         style={{ transitionDelay: '300ms' }}
