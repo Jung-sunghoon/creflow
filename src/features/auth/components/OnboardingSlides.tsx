@@ -21,19 +21,19 @@ export function IncomeListSlide() {
   ]
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
-      <p className="text-sm text-neutral-500 mb-3">12월 수익</p>
-      <div className="space-y-2.5">
+    <div className="w-full h-full bg-white rounded-2xl p-4 lg:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+      <p className="text-sm text-neutral-500 mb-2 lg:mb-3">12월 수익</p>
+      <div className="space-y-1.5 lg:space-y-2.5">
         {incomes.map((income, index) => (
           <div
             key={income.platform}
-            className={`flex items-center gap-3 p-3 bg-neutral-50 rounded-lg transition-all duration-500 ${
+            className={`flex items-center gap-2.5 lg:gap-3 p-2.5 lg:p-3 bg-neutral-50 rounded-lg transition-all duration-500 ${
               visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
             }`}
             style={{ transitionDelay: `${index * 100}ms` }}
           >
-            <div className={`w-9 h-9 ${income.color} rounded-full flex items-center justify-center`}>
-              <Plus className="w-4 h-4 text-white" />
+            <div className={`w-8 h-8 lg:w-9 lg:h-9 ${income.color} rounded-full flex items-center justify-center`}>
+              <Plus className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-neutral-900">{income.platform}</p>
