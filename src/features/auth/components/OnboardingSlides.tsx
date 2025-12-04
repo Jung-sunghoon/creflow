@@ -15,7 +15,9 @@ export function IncomeListSlide() {
   const incomes = [
     { platform: '유튜브', amount: '₩1,234,000', color: 'bg-red-500' },
     { platform: '숲', amount: '₩567,000', color: 'bg-blue-500' },
-    { platform: '광고', amount: '₩2,000,000', color: 'bg-green-500' },
+    { platform: '치지직', amount: '₩890,000', color: 'bg-emerald-500' },
+    { platform: '기타', amount: '₩150,000', color: 'bg-neutral-500' },
+    { platform: '광고', amount: '₩2,000,000', color: 'bg-amber-500' },
   ]
 
   return (
