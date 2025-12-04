@@ -50,8 +50,8 @@ export function RecentActivities({ activities, isLoading }: RecentActivitiesProp
   }
 
   return (
-    <div className="space-y-3">
-      <h2 className="text-sm font-medium text-neutral-700">최근 활동</h2>
+    <section className="space-y-3" aria-labelledby="recent-activities-title">
+      <h2 id="recent-activities-title" className="text-sm font-medium text-neutral-700">최근 활동</h2>
       <Card className="bg-white border-0 shadow-sm divide-y divide-neutral-100">
         {activities.map((activity) => (
           <div key={`${activity.type}-${activity.id}`} className="flex items-center gap-3 p-4">
@@ -87,6 +87,6 @@ export function RecentActivities({ activities, isLoading }: RecentActivitiesProp
           </div>
         ))}
       </Card>
-    </div>
+    </section>
   )
 }

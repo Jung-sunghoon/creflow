@@ -60,9 +60,9 @@ export function UpcomingEvents({ events, isLoading = false }: UpcomingEventsProp
   }
 
   return (
-    <div className="space-y-3">
-      <h2 className="text-sm font-semibold text-neutral-700 flex items-center gap-2">
-        <Calendar className="w-4 h-4" />
+    <section className="space-y-3" aria-labelledby="upcoming-events-title">
+      <h2 id="upcoming-events-title" className="text-sm font-semibold text-neutral-700 flex items-center gap-2">
+        <Calendar className="w-4 h-4" aria-hidden="true" />
         다가오는 일정
       </h2>
 
@@ -87,6 +87,6 @@ export function UpcomingEvents({ events, isLoading = false }: UpcomingEventsProp
           </div>
         ))}
       </Card>
-    </div>
+    </section>
   )
 }

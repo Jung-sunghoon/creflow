@@ -77,8 +77,9 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* 브랜드명 */}
       <div className="space-y-2">
-        <Label>브랜드명</Label>
+        <Label htmlFor="campaign-brand">브랜드명</Label>
         <Input
+          id="campaign-brand"
           value={brandName}
           onChange={(e) => setBrandName(e.target.value)}
           placeholder="브랜드명을 입력하세요"
@@ -87,9 +88,10 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
 
       {/* 금액 */}
       <div className="space-y-2">
-        <Label>계약 금액</Label>
+        <Label htmlFor="campaign-amount">계약 금액</Label>
         <div className="relative">
           <Input
+            id="campaign-amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -119,15 +121,16 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
 
       {/* 입금 완료 여부 */}
       <div className="flex items-center justify-between">
-        <Label>입금 완료</Label>
-        <Switch checked={isPaid} onCheckedChange={setIsPaid} />
+        <Label htmlFor="campaign-paid">입금 완료</Label>
+        <Switch id="campaign-paid" checked={isPaid} onCheckedChange={setIsPaid} />
       </div>
 
       {/* 메모 */}
       {!isEditMode && (
         <div className="space-y-2">
-          <Label>메모 (선택)</Label>
+          <Label htmlFor="campaign-memo">메모 (선택)</Label>
           <Input
+            id="campaign-memo"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="메모를 입력하세요"

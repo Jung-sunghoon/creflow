@@ -1,27 +1,31 @@
-'use client'
+import { Metadata } from 'next'
+import { CloseButton } from '@/shared/components/common/CloseButton'
 
-import { X } from 'lucide-react'
+export const metadata: Metadata = {
+  title: '개인정보처리방침 - CreFlow',
+  description: 'CreFlow의 개인정보 수집, 이용, 보관에 대한 정책을 확인하세요.',
+  openGraph: {
+    title: '개인정보처리방침 - CreFlow',
+    description: 'CreFlow 개인정보처리방침',
+    type: 'website',
+  },
+}
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* 헤더 */}
-        <div className="mb-8 flex items-start justify-between">
+        <header className="mb-8 flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-bold text-neutral-900">개인정보처리방침</h1>
             <p className="text-sm text-neutral-500 mt-2">최종 수정일: 2025년 12월 4일</p>
           </div>
-          <button
-            onClick={() => window.close()}
-            className="p-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5 text-neutral-500" />
-          </button>
-        </div>
+          <CloseButton />
+        </header>
 
         {/* 방침 내용 */}
-        <div className="prose prose-neutral prose-sm max-w-none">
+        <article className="prose prose-neutral prose-sm max-w-none">
           <section className="mb-8">
             <h2 className="text-lg font-semibold text-neutral-900 mb-3">1. 수집하는 개인정보</h2>
             <p className="text-neutral-700 leading-relaxed mb-3">
@@ -115,8 +119,8 @@ export default function PrivacyPage() {
               개인정보 처리에 관한 문의는 서비스 내 피드백 기능을 통해 연락해 주시기 바랍니다.
             </p>
           </section>
-        </div>
+        </article>
       </div>
-    </div>
+    </main>
   )
 }

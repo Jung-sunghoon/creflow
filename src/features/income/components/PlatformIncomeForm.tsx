@@ -209,9 +209,9 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* 플랫폼 선택 */}
       <div className="space-y-2">
-        <Label>플랫폼</Label>
+        <Label htmlFor="income-platform">플랫폼</Label>
         <Select value={source} onValueChange={(v) => setSource(v as PlatformType)}>
-          <SelectTrigger>
+          <SelectTrigger id="income-platform">
             <SelectValue placeholder="플랫폼을 선택하세요" />
           </SelectTrigger>
           <SelectContent>
@@ -228,12 +228,12 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
       {source === 'youtube' && (
         <>
           <div className="space-y-2">
-            <Label>수익 유형</Label>
+            <Label htmlFor="youtube-income-type">수익 유형</Label>
             <Select
               value={youtubeIncomeType}
               onValueChange={(v) => setYoutubeIncomeType(v as YoutubeIncomeType)}
             >
-              <SelectTrigger>
+              <SelectTrigger id="youtube-income-type">
                 <SelectValue placeholder="수익 유형을 선택하세요" />
               </SelectTrigger>
               <SelectContent>
@@ -247,9 +247,10 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>정산 금액 (유튜브 스튜디오 표시 금액)</Label>
+            <Label htmlFor="youtube-amount">정산 금액 (유튜브 스튜디오 표시 금액)</Label>
             <div className="relative">
               <Input
+                id="youtube-amount"
                 type="number"
                 value={youtubeAmount}
                 onChange={(e) => setYoutubeAmount(e.target.value)}
@@ -288,9 +289,9 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
       {source === 'soop' && (
         <>
           <div className="space-y-2">
-            <Label>BJ 등급</Label>
+            <Label htmlFor="soop-tier">BJ 등급</Label>
             <Select value={soopTier} onValueChange={(v) => setSoopTier(v as SoopTier)}>
-              <SelectTrigger>
+              <SelectTrigger id="soop-tier">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -304,9 +305,10 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>별풍선 개수</Label>
+            <Label htmlFor="soop-balloon">별풍선 개수</Label>
             <div className="relative">
               <Input
+                id="soop-balloon"
                 type="number"
                 value={soopBalloonCount}
                 onChange={(e) => setSoopBalloonCount(e.target.value)}
@@ -349,9 +351,9 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
       {source === 'chzzk' && (
         <>
           <div className="space-y-2">
-            <Label>스트리머 등급</Label>
+            <Label htmlFor="chzzk-tier">스트리머 등급</Label>
             <Select value={chzzkTier} onValueChange={(v) => setChzzkTier(v as ChzzkTier)}>
-              <SelectTrigger>
+              <SelectTrigger id="chzzk-tier">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -365,9 +367,10 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>치즈 개수</Label>
+            <Label htmlFor="chzzk-cheese">치즈 개수</Label>
             <div className="relative">
               <Input
+                id="chzzk-cheese"
                 type="number"
                 value={chzzkCheeseCount}
                 onChange={(e) => setChzzkCheeseCount(e.target.value)}
@@ -409,9 +412,10 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
       {/* ===== 기타 ===== */}
       {source === 'other' && (
         <div className="space-y-2">
-          <Label>수익 금액</Label>
+          <Label htmlFor="other-amount">수익 금액</Label>
           <div className="relative">
             <Input
+              id="other-amount"
               type="number"
               value={otherAmount}
               onChange={(e) => setOtherAmount(e.target.value)}
@@ -445,8 +449,9 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
       {/* 메모 */}
       {source && (
         <div className="space-y-2">
-          <Label>메모 (선택)</Label>
+          <Label htmlFor="income-memo">메모 (선택)</Label>
           <Input
+            id="income-memo"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="메모를 입력하세요"

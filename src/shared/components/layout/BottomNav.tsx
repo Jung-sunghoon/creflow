@@ -34,8 +34,9 @@ export function BottomNav() {
                       ? 'text-neutral-900'
                       : 'text-neutral-400 hover:text-neutral-600'
                   )}
+                  aria-current={isActive ? 'page' : undefined}
                 >
-                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} aria-hidden="true" />
                   <span className={cn(
                     'text-xs',
                     isActive ? 'font-semibold' : 'font-medium'

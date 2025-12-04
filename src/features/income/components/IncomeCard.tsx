@@ -26,9 +26,10 @@ export function IncomeCard({ income, onEdit, onDelete }: IncomeCardProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-            <span className="text-lg">
+            <span className="text-lg" aria-hidden="true">
               {income.type === 'platform' ? '📺' : '🏷️'}
             </span>
+            <span className="sr-only">{income.type === 'platform' ? '플랫폼 수익' : '광고/협찬'}</span>
           </div>
           <div>
             <p className="text-sm font-medium text-foreground">
@@ -46,8 +47,9 @@ export function IncomeCard({ income, onEdit, onDelete }: IncomeCardProps) {
               size="icon"
               className="h-8 w-8 text-muted-foreground hover:bg-neutral-100 hover:text-foreground"
               onClick={onEdit}
+              aria-label="수익 수정"
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="h-4 w-4" aria-hidden="true" />
             </Button>
             <DeleteConfirmDialog
               title="수익을 삭제하시겠습니까?"
@@ -58,8 +60,9 @@ export function IncomeCard({ income, onEdit, onDelete }: IncomeCardProps) {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                aria-label="수익 삭제"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
               </Button>
             </DeleteConfirmDialog>
           </div>
@@ -89,7 +92,8 @@ export function CampaignCard({ campaign, onTogglePaid, onEdit, onDelete }: Campa
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">
-            <span className="text-lg">🏷️</span>
+            <span className="text-lg" aria-hidden="true">🏷️</span>
+            <span className="sr-only">광고/협찬</span>
           </div>
           <div>
             <p className="text-sm font-medium text-foreground">
@@ -118,8 +122,9 @@ export function CampaignCard({ campaign, onTogglePaid, onEdit, onDelete }: Campa
               size="icon"
               className="h-8 w-8 text-muted-foreground hover:bg-neutral-100 hover:text-foreground"
               onClick={onEdit}
+              aria-label="광고/협찬 수정"
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="h-4 w-4" aria-hidden="true" />
             </Button>
             <DeleteConfirmDialog
               title="광고/협찬을 삭제하시겠습니까?"
@@ -130,8 +135,9 @@ export function CampaignCard({ campaign, onTogglePaid, onEdit, onDelete }: Campa
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                aria-label="광고/협찬 삭제"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
               </Button>
             </DeleteConfirmDialog>
           </div>

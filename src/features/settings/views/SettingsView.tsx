@@ -44,7 +44,7 @@ export function SettingsView() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background" aria-label="설정">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="px-4 py-3">
@@ -74,6 +74,6 @@ export function SettingsView() {
           <p className="mt-1">크리에이터의 진짜 수익을 3초 만에</p>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

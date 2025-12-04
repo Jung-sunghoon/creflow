@@ -18,8 +18,9 @@ export function Header({ title = 'CreFlow', showSettings = true }: HeaderProps) 
           <Link
             href="/settings"
             className="p-2 -mr-2 text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer"
+            aria-label="설정"
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="w-5 h-5" aria-hidden="true" />
           </Link>
         )}
       </div>

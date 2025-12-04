@@ -106,8 +106,9 @@ export function LoginView() {
           <button
             onClick={() => handleNavigate('prev')}
             className="p-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
+            aria-label="이전 슬라이드"
           >
-            <ChevronLeft className="w-6 h-6 text-neutral-400" />
+            <ChevronLeft className="w-6 h-6 text-neutral-400" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -117,8 +118,9 @@ export function LoginView() {
           <button
             onClick={() => handleNavigate('next')}
             className="p-2 rounded-full hover:bg-neutral-100 transition-colors cursor-pointer"
+            aria-label="다음 슬라이드"
           >
-            <ChevronRight className="w-6 h-6 text-neutral-400" />
+            <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -175,6 +177,8 @@ export function LoginView() {
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                 index === currentSlide ? 'bg-neutral-900 w-6' : 'bg-neutral-300 w-2'
               }`}
+              aria-label={`슬라이드 ${index + 1}로 이동`}
+              aria-current={index === currentSlide ? 'true' : undefined}
             />
           ))}
         </div>

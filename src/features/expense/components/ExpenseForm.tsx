@@ -86,9 +86,9 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* 지출 유형 */}
       <div className="space-y-2">
-        <Label>지출 유형</Label>
+        <Label htmlFor="expense-type">지출 유형</Label>
         <Select value={type} onValueChange={(v) => setType(v as ExpenseType)}>
-          <SelectTrigger>
+          <SelectTrigger id="expense-type">
             <SelectValue placeholder="지출 유형을 선택하세요" />
           </SelectTrigger>
           <SelectContent>
@@ -104,9 +104,9 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
       {/* 협력자 선택 (인건비인 경우) */}
       {isCollaboratorType && (
         <div className="space-y-2">
-          <Label>협력자</Label>
+          <Label htmlFor="expense-collaborator">협력자</Label>
           <Select value={collaboratorId} onValueChange={setCollaboratorId}>
-            <SelectTrigger>
+            <SelectTrigger id="expense-collaborator">
               <SelectValue placeholder="협력자를 선택하세요" />
             </SelectTrigger>
             <SelectContent>
@@ -129,8 +129,9 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
       {/* 지출 내용 (기타 지출인 경우) */}
       {type === 'other' && (
         <div className="space-y-2">
-          <Label>지출 내용</Label>
+          <Label htmlFor="expense-description">지출 내용</Label>
           <Input
+            id="expense-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="지출 내용을 입력하세요"
@@ -140,9 +141,10 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
 
       {/* 금액 */}
       <div className="space-y-2">
-        <Label>금액</Label>
+        <Label htmlFor="expense-amount">금액</Label>
         <div className="relative">
           <Input
+            id="expense-amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -172,14 +174,15 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
 
       {/* 지급 완료 여부 */}
       <div className="flex items-center justify-between">
-        <Label>지급 완료</Label>
-        <Switch checked={isPaid} onCheckedChange={setIsPaid} />
+        <Label htmlFor="expense-paid">지급 완료</Label>
+        <Switch id="expense-paid" checked={isPaid} onCheckedChange={setIsPaid} />
       </div>
 
       {/* 메모 */}
       <div className="space-y-2">
-        <Label>메모 (선택)</Label>
+        <Label htmlFor="expense-memo">메모 (선택)</Label>
         <Input
+          id="expense-memo"
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           placeholder="메모를 입력하세요"

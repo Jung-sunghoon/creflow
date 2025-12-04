@@ -21,7 +21,7 @@ export function HomeView() {
   }
 
   return (
-    <div className="px-4 py-6 lg:px-0">
+    <main className="px-4 py-6 lg:px-0" aria-label="대시보드">
       {/* PC: 2컬럼 그리드, 모바일: 수직 스택 */}
       <div className="lg:grid lg:grid-cols-3 lg:gap-6 space-y-6 lg:space-y-0">
         {/* 왼쪽 영역 - 순수익 + 수익/지출 */}
@@ -50,6 +50,6 @@ export function HomeView() {
           <UpcomingEvents events={events} isLoading={eventsLoading} />
         </div>
       </div>
-    </div>
+    </main>
   )
 }

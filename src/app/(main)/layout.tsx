@@ -9,6 +9,14 @@ export default function MainLayout({
 }) {
   return (
     <div className="min-h-screen bg-neutral-50">
+      {/* Skip Navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:outline-none"
+      >
+        본문으로 건너뛰기
+      </a>
+
       {/* PC 사이드바 */}
       <SideNav />
 
@@ -18,7 +26,7 @@ export default function MainLayout({
       </div>
 
       {/* 메인 컨텐츠 */}
-      <main className="lg:ml-60 pb-20 lg:pb-0">
+      <main id="main-content" className="lg:ml-60 pb-20 lg:pb-0">
         <div className="mx-auto max-w-[480px] lg:max-w-5xl lg:px-8 lg:py-8">
           {children}
         </div>

@@ -66,9 +66,9 @@ export function FeedbackForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* 피드백 유형 */}
       <div className="space-y-2">
-        <Label>유형</Label>
+        <Label htmlFor="feedback-type">유형</Label>
         <Select value={type} onValueChange={(v) => setType(v as FeedbackType)}>
-          <SelectTrigger>
+          <SelectTrigger id="feedback-type">
             <SelectValue placeholder="피드백 유형을 선택하세요" />
           </SelectTrigger>
           <SelectContent>
@@ -83,8 +83,9 @@ export function FeedbackForm() {
 
       {/* 내용 */}
       <div className="space-y-2">
-        <Label>내용</Label>
+        <Label htmlFor="feedback-content">내용</Label>
         <Textarea
+          id="feedback-content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="피드백 내용을 입력하세요"
@@ -94,8 +95,9 @@ export function FeedbackForm() {
 
       {/* 이메일 (선택) */}
       <div className="space-y-2">
-        <Label>이메일 (선택)</Label>
+        <Label htmlFor="feedback-email">이메일 (선택)</Label>
         <Input
+          id="feedback-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

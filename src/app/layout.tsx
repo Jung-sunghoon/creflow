@@ -29,6 +29,21 @@ export const viewport: Viewport = {
   userScalable: false,
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'CreFlow',
+  description: '흩어진 수익, 한눈에 정리하세요. 유튜브, 숲, 치지직, 광고 수익부터 협력자 정산까지.',
+  url: 'https://cre-flow.vercel.app',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KRW',
+  },
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,6 +51,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="font-sans antialiased">
         <QueryProvider>
           {children}

@@ -81,7 +81,7 @@ export function SummaryCards({
   expenseChangeRate,
 }: SummaryCardsProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="수익/지출 요약">
       <SummaryCard
         type="income"
         amount={totalIncome}
@@ -92,6 +92,6 @@ export function SummaryCards({
         amount={totalExpense}
         changeRate={expenseChangeRate}
       />
-    </div>
+    </section>
   )
 }

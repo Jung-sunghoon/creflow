@@ -34,7 +34,7 @@ export function ExpenseListView() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
@@ -132,6 +132,6 @@ export function ExpenseListView() {
           </>
         )}
       </div>
-    </div>
+    </main>
   )
 }

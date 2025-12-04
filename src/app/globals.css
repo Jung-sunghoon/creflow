@@ -153,6 +153,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* 접근성: 모든 상호작용 요소에 명확한 포커스 표시 */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
 }
 
 /* Float animation for onboarding cards */

@@ -42,8 +42,9 @@ export function SideNav() {
                       ? 'bg-neutral-100 text-neutral-900 font-medium'
                       : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
                   )}
+                  aria-current={isActive ? 'page' : undefined}
                 >
-                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} aria-hidden="true" />
                   <span>{label}</span>
                 </Link>
               </li>
@@ -62,8 +63,9 @@ export function SideNav() {
               ? 'bg-neutral-100 text-neutral-900 font-medium'
               : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
           )}
+          aria-current={pathname === '/settings' ? 'page' : undefined}
         >
-          <Settings className="w-5 h-5" strokeWidth={1.5} />
+          <Settings className="w-5 h-5" strokeWidth={1.5} aria-hidden="true" />
           <span>설정</span>
         </Link>
       </div>

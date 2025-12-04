@@ -76,8 +76,9 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* 이름 */}
       <div className="space-y-2">
-        <Label>이름</Label>
+        <Label htmlFor="collaborator-name">이름</Label>
         <Input
+          id="collaborator-name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="협력자 이름"
@@ -86,8 +87,9 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
 
       {/* 역할 */}
       <div className="space-y-2">
-        <Label>역할</Label>
+        <Label htmlFor="collaborator-role">역할</Label>
         <Input
+          id="collaborator-role"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           placeholder="예: 편집자, 디자이너, 매니저"
@@ -96,9 +98,9 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
 
       {/* 정산 방식 */}
       <div className="space-y-2">
-        <Label>정산 방식</Label>
+        <Label htmlFor="collaborator-payment-type">정산 방식</Label>
         <Select value={paymentType} onValueChange={(v) => setPaymentType(v as PaymentType)}>
-          <SelectTrigger>
+          <SelectTrigger id="collaborator-payment-type">
             <SelectValue placeholder="정산 방식을 선택하세요" />
           </SelectTrigger>
           <SelectContent>
@@ -114,9 +116,10 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
       {/* 고정급 */}
       {showBaseAmount && (
         <div className="space-y-2">
-          <Label>고정급 (월)</Label>
+          <Label htmlFor="collaborator-base-amount">고정급 (월)</Label>
           <div className="relative">
             <Input
+              id="collaborator-base-amount"
               type="number"
               value={baseAmount}
               onChange={(e) => setBaseAmount(e.target.value)}
@@ -133,9 +136,10 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
       {/* 수익 배분율 */}
       {showPercentage && (
         <div className="space-y-2">
-          <Label>수익 배분율</Label>
+          <Label htmlFor="collaborator-percentage">수익 배분율</Label>
           <div className="relative">
             <Input
+              id="collaborator-percentage"
               type="number"
               value={percentage}
               onChange={(e) => setPercentage(e.target.value)}
@@ -153,8 +157,9 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
 
       {/* 메모 */}
       <div className="space-y-2">
-        <Label>메모 (선택)</Label>
+        <Label htmlFor="collaborator-memo">메모 (선택)</Label>
         <Input
+          id="collaborator-memo"
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           placeholder="메모를 입력하세요"

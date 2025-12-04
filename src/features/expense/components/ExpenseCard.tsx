@@ -28,9 +28,10 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
             isCollaborator ? 'bg-purple-50' : 'bg-neutral-100'
           }`}>
-            <span className="text-lg">
+            <span className="text-lg" aria-hidden="true">
               {isCollaborator ? '👤' : '📦'}
             </span>
+            <span className="sr-only">{isCollaborator ? '인건비' : '기타 지출'}</span>
           </div>
           <div>
             <p className="text-sm font-medium text-foreground">
@@ -59,8 +60,9 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
               size="icon"
               className="h-8 w-8 text-muted-foreground hover:bg-neutral-100 hover:text-foreground"
               onClick={onEdit}
+              aria-label="지출 수정"
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="h-4 w-4" aria-hidden="true" />
             </Button>
             <DeleteConfirmDialog
               title="지출을 삭제하시겠습니까?"
@@ -71,8 +73,9 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                aria-label="지출 삭제"
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
               </Button>
             </DeleteConfirmDialog>
           </div>
