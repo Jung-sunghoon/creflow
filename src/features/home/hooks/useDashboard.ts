@@ -3,7 +3,17 @@
 import { useQuery } from '@tanstack/react-query'
 import { createClient } from '@/shared/lib/supabase/client'
 import { startOfMonth, endOfMonth, subMonths, format, differenceInDays } from 'date-fns'
-import type { DashboardSummary, UpcomingEvent } from '@/shared/types'
+import type { DashboardSummary, UpcomingEvent, PlatformType } from '@/shared/types'
+
+// 최근 활동 타입
+export interface RecentActivity {
+  id: string
+  type: 'income' | 'expense'
+  source: PlatformType | 'ad' | 'collaborator' | 'other'
+  description: string
+  amount: number
+  date: string
+}
 
 // 현재 로그인한 사용자 ID 가져오기
 async function getCurrentUserId(): Promise<string | null> {
@@ -203,5 +213,104 @@ export function useUpcomingEvents() {
       return events.sort((a, b) => a.daysLeft - b.daysLeft).slice(0, 5)
     },
     staleTime: 0, // 즉시 업데이트
+  })
+}
+
+// 플랫폼 이름 변환
+const platformNames: Record<string, string> = {
+  youtube: '유튜브',
+  soop: '숲',
+  chzzk: '치지직',
+  instagram: '인스타그램',
+  tiktok: '틱톡',
+  other: '기타',
+  ad: '광고',
+  collaborator: '협력자',
+}
+
+export function useRecentActivities(limit = 5) {
+  return useQuery({
+    queryKey: ['recent-activities', limit],
+    queryFn: async (): Promise<RecentActivity[]> => {
+      const userId = await getCurrentUserId()
+      if (!userId) return []
+
+      const supabase = createClient()
+      const activities: RecentActivity[] = []
+
+      // 최근 수익 (플랫폼)
+      const { data: incomes } = await supabase
+        .from('incomes')
+        .select('id, source, amount, date, memo')
+        .eq('user_id', userId)
+        .order('date', { ascending: false })
+        .limit(limit)
+
+      if (incomes) {
+        for (const income of incomes) {
+          activities.push({
+            id: income.id,
+            type: 'income',
+            source: income.source || 'other',
+            description: platformNames[income.source || 'other'] || '수익',
+            amount: income.amount,
+            date: income.date,
+          })
+        }
+      }
+
+      // 최근 캠페인 (광고)
+      const { data: campaigns } = await supabase
+        .from('campaigns')
+        .select('id, brand_name, amount, payment_date, created_at')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(limit)
+
+      if (campaigns) {
+        for (const campaign of campaigns) {
+          activities.push({
+            id: campaign.id,
+            type: 'income',
+            source: 'ad',
+            description: campaign.brand_name,
+            amount: campaign.amount,
+            date: campaign.payment_date || campaign.created_at.split('T')[0],
+          })
+        }
+      }
+
+      // 최근 지출
+      const { data: expenses } = await supabase
+        .from('expenses')
+        .select('id, type, description, amount, date, collaborators(name)')
+        .eq('user_id', userId)
+        .order('date', { ascending: false })
+        .limit(limit)
+
+      if (expenses) {
+        for (const expense of expenses) {
+          const collaboratorData = expense.collaborators as unknown
+          const collaborator = Array.isArray(collaboratorData)
+            ? (collaboratorData[0] as { name: string } | undefined)
+            : (collaboratorData as { name: string } | null)
+
+          activities.push({
+            id: expense.id,
+            type: 'expense',
+            source: expense.type === 'collaborator' ? 'collaborator' : 'other',
+            description: collaborator?.name || expense.description || '지출',
+            amount: expense.amount,
+            date: expense.date,
+          })
+        }
+      }
+
+      // 날짜순 정렬 후 limit 개수만 반환
+      return activities
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, limit)
+    },
+    staleTime: 0,
   })
 }

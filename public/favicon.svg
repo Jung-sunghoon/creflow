@@ -1,0 +1,6 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 말풍선 -->
+  <path d="M1 4C1 2.34315 2.34315 1 4 1H28C29.6569 1 31 2.34315 31 4V21C31 22.6569 29.6569 24 28 24H18L10 31V24H4C2.34315 24 1 22.6569 1 21V4Z" fill="#2563EB"/>
+  <!-- ₩ 기호 -->
+  <text x="16" y="13" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="middle">₩</text>
+</svg>

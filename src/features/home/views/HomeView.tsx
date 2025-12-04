@@ -6,12 +6,14 @@ import { NetIncomeCard } from '../components/NetIncomeCard'
 import { SummaryCards } from '../components/SummaryCards'
 import { UpcomingEvents } from '../components/UpcomingEvents'
 import { DashboardSkeleton } from '../components/DashboardSkeleton'
-import { useDashboard, useUpcomingEvents } from '../hooks/useDashboard'
+import { useDashboard, useUpcomingEvents, useRecentActivities } from '../hooks/useDashboard'
+import { RecentActivities } from '../components/RecentActivities'
 
 export function HomeView() {
   const currentMonth = format(new Date(), 'M월', { locale: ko })
   const { data: dashboard, isLoading: dashboardLoading } = useDashboard()
   const { data: events = [], isLoading: eventsLoading } = useUpcomingEvents()
+  const { data: activities = [], isLoading: activitiesLoading } = useRecentActivities(5)
 
   // 로딩 중일 때 스켈레톤 표시
   if (dashboardLoading) {
@@ -38,6 +40,9 @@ export function HomeView() {
             incomeChangeRate={dashboard?.incomeChangeRate ?? 0}
             expenseChangeRate={dashboard?.expenseChangeRate ?? 0}
           />
+
+          {/* 최근 활동 */}
+          <RecentActivities activities={activities} isLoading={activitiesLoading} />
         </div>
 
         {/* 오른쪽 영역 - 다가오는 일정 */}
