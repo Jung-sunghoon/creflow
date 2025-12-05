@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cre-flow.vercel.app'
+  const baseUrl = 'https://cre-flow.site'
 
   return [
     {

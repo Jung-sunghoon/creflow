@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  verification: {
+    google: 'r9ot4bSzp6dq23_Jn0hoc3rRf2P10nYbvGoNBYeFq0A',
+  },
   openGraph: {
     title: 'CreFlow - 크리에이터 수익 관리',
     description: '흩어진 수익, 한눈에 정리하세요',
@@ -34,7 +37,7 @@ const jsonLd = {
   '@type': 'WebApplication',
   name: 'CreFlow',
   description: '흩어진 수익, 한눈에 정리하세요. 유튜브, 숲, 치지직, 광고 수익부터 협력자 정산까지.',
-  url: 'https://cre-flow.vercel.app',
+  url: 'https://cre-flow.site',
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Web',
   offers: {

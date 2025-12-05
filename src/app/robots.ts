@@ -7,5 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/onboarding/'],
     },
+    sitemap: 'https://cre-flow.site/sitemap.xml',
   }
 }
