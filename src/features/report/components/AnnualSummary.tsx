@@ -13,7 +13,7 @@ export function AnnualSummary({ report }: AnnualSummaryProps) {
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">{report.year}년 연간 요약</h2>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Card className="p-4 bg-white border-0 shadow-sm">
           <p className="text-xs text-muted-foreground mb-1">총 수익</p>
           <p className="text-lg font-bold text-accent">
