@@ -8,7 +8,7 @@ export default function MainLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-background flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-background">
       {/* Skip Navigation */}
       <a
         href="#main-content"
@@ -26,8 +26,8 @@ export default function MainLayout({
       </div>
 
       {/* 메인 컨텐츠 */}
-      <main id="main-content" className="flex-1 pb-20 lg:pb-0">
-        <div className="mx-auto max-w-[480px] lg:max-w-5xl lg:px-8 lg:py-8 min-h-full flex flex-col">
+      <main id="main-content" className="lg:ml-60 pb-20 lg:pb-0">
+        <div className="mx-auto max-w-[480px] lg:max-w-5xl lg:px-8 lg:py-8">
           {children}
         </div>
       </main>
