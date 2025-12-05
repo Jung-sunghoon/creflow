@@ -37,7 +37,11 @@ export function useCreateCollaborator() {
       return createCollaborator(userId, data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -49,7 +53,11 @@ export function useUpdateCollaborator() {
     mutationFn: ({ id, data }: { id: string; data: Partial<CollaboratorFormData> }) =>
       updateCollaborator(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -60,7 +68,11 @@ export function useDeleteCollaborator() {
   return useMutation({
     mutationFn: (id: string) => deleteCollaborator(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['collaborators'] })
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }

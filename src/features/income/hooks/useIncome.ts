@@ -70,13 +70,13 @@ export function useCreateIncome() {
       if (!userId) throw new Error('로그인이 필요합니다')
       return createIncome(userId, data)
     },
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['incomes'] }),
-        queryClient.refetchQueries({ queryKey: ['campaigns'] }),
-        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
-        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
-      ])
+    onSuccess: () => {
+      // 관련 캐시 완전 제거 - 다음 접근 시 새로 fetch
+      queryClient.removeQueries({ queryKey: ['incomes'] })
+      queryClient.removeQueries({ queryKey: ['campaigns'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -87,12 +87,12 @@ export function useUpdateIncome() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<IncomeFormData> }) =>
       updateIncome(id, data),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['incomes'] }),
-        queryClient.refetchQueries({ queryKey: ['income'] }),
-        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
-      ])
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['incomes'] })
+      queryClient.removeQueries({ queryKey: ['income'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -128,9 +128,11 @@ export function useDeleteIncome() {
       }
     },
     onSettled: () => {
-      // 성공/실패 상관없이 캐시 갱신
-      queryClient.invalidateQueries({ queryKey: ['incomes'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      // 성공/실패 상관없이 캐시 제거
+      queryClient.removeQueries({ queryKey: ['incomes'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -165,10 +167,11 @@ export function useUpdateCampaignStatus() {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
-      queryClient.invalidateQueries({ queryKey: ['campaign'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['campaigns'] })
+      queryClient.removeQueries({ queryKey: ['campaign'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -179,13 +182,12 @@ export function useUpdateCampaign() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Parameters<typeof updateCampaign>[1] }) =>
       updateCampaign(id, data),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['campaigns'] }),
-        queryClient.refetchQueries({ queryKey: ['campaign'] }),
-        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
-        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
-      ])
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['campaigns'] })
+      queryClient.removeQueries({ queryKey: ['campaign'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -217,9 +219,10 @@ export function useDeleteCampaign() {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['campaigns'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }

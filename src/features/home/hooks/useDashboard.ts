@@ -49,57 +49,62 @@ export function useDashboard() {
       const prevMonthStart = format(startOfMonth(prevMonth), 'yyyy-MM-dd')
       const prevMonthEnd = format(endOfMonth(prevMonth), 'yyyy-MM-dd')
 
-      // 이번 달 플랫폼 수익
-      const { data: currentIncomes } = await supabase
-        .from('incomes')
-        .select('amount')
-        .eq('user_id', userId)
-        .gte('date', currentMonthStart)
-        .lte('date', currentMonthEnd)
-
-      // 이번 달 입금된 캠페인 (광고/협찬)
-      const { data: currentCampaigns } = await supabase
-        .from('campaigns')
-        .select('amount')
-        .eq('user_id', userId)
-        .eq('is_paid', true)
-        .gte('payment_date', currentMonthStart)
-        .lte('payment_date', currentMonthEnd)
-
-      // 이번 달 지급된 지출
-      const { data: currentExpenses } = await supabase
-        .from('expenses')
-        .select('amount')
-        .eq('user_id', userId)
-        .eq('is_paid', true)
-        .gte('date', currentMonthStart)
-        .lte('date', currentMonthEnd)
-
-      // 지난 달 플랫폼 수익
-      const { data: prevIncomes } = await supabase
-        .from('incomes')
-        .select('amount')
-        .eq('user_id', userId)
-        .gte('date', prevMonthStart)
-        .lte('date', prevMonthEnd)
-
-      // 지난 달 입금된 캠페인
-      const { data: prevCampaigns } = await supabase
-        .from('campaigns')
-        .select('amount')
-        .eq('user_id', userId)
-        .eq('is_paid', true)
-        .gte('payment_date', prevMonthStart)
-        .lte('payment_date', prevMonthEnd)
-
-      // 지난 달 지급된 지출
-      const { data: prevExpenses } = await supabase
-        .from('expenses')
-        .select('amount')
-        .eq('user_id', userId)
-        .eq('is_paid', true)
-        .gte('date', prevMonthStart)
-        .lte('date', prevMonthEnd)
+      // 모든 쿼리를 병렬로 실행
+      const [
+        { data: currentIncomes },
+        { data: currentCampaigns },
+        { data: currentExpenses },
+        { data: prevIncomes },
+        { data: prevCampaigns },
+        { data: prevExpenses },
+      ] = await Promise.all([
+        // 이번 달 플랫폼 수익
+        supabase
+          .from('incomes')
+          .select('amount')
+          .eq('user_id', userId)
+          .gte('date', currentMonthStart)
+          .lte('date', currentMonthEnd),
+        // 이번 달 입금된 캠페인 (광고/협찬)
+        supabase
+          .from('campaigns')
+          .select('amount')
+          .eq('user_id', userId)
+          .eq('is_paid', true)
+          .gte('payment_date', currentMonthStart)
+          .lte('payment_date', currentMonthEnd),
+        // 이번 달 지급된 지출
+        supabase
+          .from('expenses')
+          .select('amount')
+          .eq('user_id', userId)
+          .eq('is_paid', true)
+          .gte('date', currentMonthStart)
+          .lte('date', currentMonthEnd),
+        // 지난 달 플랫폼 수익
+        supabase
+          .from('incomes')
+          .select('amount')
+          .eq('user_id', userId)
+          .gte('date', prevMonthStart)
+          .lte('date', prevMonthEnd),
+        // 지난 달 입금된 캠페인
+        supabase
+          .from('campaigns')
+          .select('amount')
+          .eq('user_id', userId)
+          .eq('is_paid', true)
+          .gte('payment_date', prevMonthStart)
+          .lte('payment_date', prevMonthEnd),
+        // 지난 달 지급된 지출
+        supabase
+          .from('expenses')
+          .select('amount')
+          .eq('user_id', userId)
+          .eq('is_paid', true)
+          .gte('date', prevMonthStart)
+          .lte('date', prevMonthEnd),
+      ])
 
       // 이번 달 집계
       const incomeSum = currentIncomes?.reduce((sum, i) => sum + (i.amount || 0), 0) ?? 0
@@ -132,7 +137,7 @@ export function useDashboard() {
         expenseChangeRate,
       }
     },
-    staleTime: 0, // 즉시 업데이트
+    staleTime: 1000 * 60, // 1분간 캐시
   })
 }
 
@@ -150,17 +155,30 @@ export function useUpcomingEvents() {
 
       const events: UpcomingEvent[] = []
 
-      // 미입금 캠페인 (입금 예정)
-      const { data: unpaidCampaigns } = await supabase
-        .from('campaigns')
-        .select('id, brand_name, payment_date')
-        .eq('user_id', userId)
-        .eq('is_paid', false)
-        .not('payment_date', 'is', null)
-        .gte('payment_date', todayStr)
-        .lte('payment_date', twoWeeksLater)
-        .order('payment_date', { ascending: true })
-        .limit(5)
+      // 병렬로 쿼리 실행
+      const [{ data: unpaidCampaigns }, { data: unpaidExpenses }] = await Promise.all([
+        // 미입금 캠페인 (입금 예정)
+        supabase
+          .from('campaigns')
+          .select('id, brand_name, payment_date')
+          .eq('user_id', userId)
+          .eq('is_paid', false)
+          .not('payment_date', 'is', null)
+          .gte('payment_date', todayStr)
+          .lte('payment_date', twoWeeksLater)
+          .order('payment_date', { ascending: true })
+          .limit(5),
+        // 미지급 지출 (정산 예정) - 협력자 정보 포함
+        supabase
+          .from('expenses')
+          .select('id, description, date, collaborators(name)')
+          .eq('user_id', userId)
+          .eq('is_paid', false)
+          .gte('date', todayStr)
+          .lte('date', twoWeeksLater)
+          .order('date', { ascending: true })
+          .limit(5),
+      ])
 
       if (unpaidCampaigns) {
         for (const campaign of unpaidCampaigns) {
@@ -176,17 +194,6 @@ export function useUpcomingEvents() {
           }
         }
       }
-
-      // 미지급 지출 (정산 예정) - 협력자 정보 포함
-      const { data: unpaidExpenses } = await supabase
-        .from('expenses')
-        .select('id, description, date, collaborators(name)')
-        .eq('user_id', userId)
-        .eq('is_paid', false)
-        .gte('date', todayStr)
-        .lte('date', twoWeeksLater)
-        .order('date', { ascending: true })
-        .limit(5)
 
       if (unpaidExpenses) {
         for (const expense of unpaidExpenses) {
@@ -212,7 +219,7 @@ export function useUpcomingEvents() {
       // daysLeft 기준으로 정렬
       return events.sort((a, b) => a.daysLeft - b.daysLeft).slice(0, 5)
     },
-    staleTime: 0, // 즉시 업데이트
+    staleTime: 1000 * 60, // 1분간 캐시
   })
 }
 
@@ -238,13 +245,30 @@ export function useRecentActivities(limit = 5) {
       const supabase = createClient()
       const activities: RecentActivity[] = []
 
-      // 최근 수익 (플랫폼)
-      const { data: incomes } = await supabase
-        .from('incomes')
-        .select('id, source, amount, date, memo')
-        .eq('user_id', userId)
-        .order('date', { ascending: false })
-        .limit(limit)
+      // 병렬로 쿼리 실행
+      const [{ data: incomes }, { data: campaigns }, { data: expenses }] = await Promise.all([
+        // 최근 수익 (플랫폼)
+        supabase
+          .from('incomes')
+          .select('id, source, amount, date, memo')
+          .eq('user_id', userId)
+          .order('date', { ascending: false })
+          .limit(limit),
+        // 최근 캠페인 (광고)
+        supabase
+          .from('campaigns')
+          .select('id, brand_name, amount, payment_date, created_at')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(limit),
+        // 최근 지출
+        supabase
+          .from('expenses')
+          .select('id, type, description, amount, date, collaborators(name)')
+          .eq('user_id', userId)
+          .order('date', { ascending: false })
+          .limit(limit),
+      ])
 
       if (incomes) {
         for (const income of incomes) {
@@ -259,14 +283,6 @@ export function useRecentActivities(limit = 5) {
         }
       }
 
-      // 최근 캠페인 (광고)
-      const { data: campaigns } = await supabase
-        .from('campaigns')
-        .select('id, brand_name, amount, payment_date, created_at')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(limit)
-
       if (campaigns) {
         for (const campaign of campaigns) {
           activities.push({
@@ -279,14 +295,6 @@ export function useRecentActivities(limit = 5) {
           })
         }
       }
-
-      // 최근 지출
-      const { data: expenses } = await supabase
-        .from('expenses')
-        .select('id, type, description, amount, date, collaborators(name)')
-        .eq('user_id', userId)
-        .order('date', { ascending: false })
-        .limit(limit)
 
       if (expenses) {
         for (const expense of expenses) {
@@ -311,6 +319,6 @@ export function useRecentActivities(limit = 5) {
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, limit)
     },
-    staleTime: 0,
+    staleTime: 1000 * 60, // 1분간 캐시
   })
 }

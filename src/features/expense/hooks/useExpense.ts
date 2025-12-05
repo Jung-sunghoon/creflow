@@ -46,12 +46,11 @@ export function useCreateExpense() {
       if (!userId) throw new Error('로그인이 필요합니다')
       return createExpense(userId, data)
     },
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['expenses'] }),
-        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
-        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
-      ])
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -62,13 +61,12 @@ export function useUpdateExpense() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<ExpenseFormData> }) =>
       updateExpense(id, data),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.refetchQueries({ queryKey: ['expenses'] }),
-        queryClient.refetchQueries({ queryKey: ['expense'] }),
-        queryClient.refetchQueries({ queryKey: ['dashboard'] }),
-        queryClient.refetchQueries({ queryKey: ['upcoming-events'] }),
-      ])
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['expense'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -100,9 +98,10 @@ export function useDeleteExpense() {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['expenses'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
@@ -137,10 +136,11 @@ export function useUpdateExpenseStatus() {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['expenses'] })
-      queryClient.invalidateQueries({ queryKey: ['expense'] })
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
-      queryClient.invalidateQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['expenses'] })
+      queryClient.removeQueries({ queryKey: ['expense'] })
+      queryClient.removeQueries({ queryKey: ['dashboard'] })
+      queryClient.removeQueries({ queryKey: ['upcoming-events'] })
+      queryClient.removeQueries({ queryKey: ['recent-activities'] })
     },
   })
 }
