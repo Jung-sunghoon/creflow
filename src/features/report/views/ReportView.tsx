@@ -51,7 +51,7 @@ export function ReportView() {
   }
 
   return (
-    <main className="flex-1 bg-background flex flex-col" aria-label="연간 리포트">
+    <main className="bg-background flex flex-col min-h-full" aria-label="연간 리포트">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
