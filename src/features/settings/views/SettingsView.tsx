@@ -68,6 +68,27 @@ export function SettingsView() {
           </Card>
         </div>
 
+        {/* 후원 */}
+        <div className="space-y-4">
+          <h2 className="text-base font-semibold">개발자 후원</h2>
+          <Card className="p-4 bg-white border-0 shadow-sm">
+            <p className="text-sm text-muted-foreground mb-3">
+              CreFlow가 도움이 되셨다면 커피 한 잔 사주세요 ☕
+            </p>
+            <a
+              href="https://qr.kakaopay.com/Ej87OcN6N"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#FEE500] text-[#191919] text-sm font-medium rounded-lg hover:bg-[#FDD800] transition-colors"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3C6.48 3 2 6.58 2 11c0 2.83 1.82 5.31 4.53 6.71L5.71 21l4.08-2.12c.72.12 1.46.12 2.21.12 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+              </svg>
+              카카오페이로 후원하기
+            </a>
+          </Card>
+        </div>
+
         {/* 앱 정보 */}
         <div className="text-center text-sm text-muted-foreground pt-4">
           <p>CreFlow v1.0.0</p>
