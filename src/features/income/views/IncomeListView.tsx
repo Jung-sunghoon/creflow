@@ -39,7 +39,7 @@ export function IncomeListView() {
   }
 
   return (
-    <main className="min-h-screen bg-background flex flex-col">
+    <main className="flex-1 bg-background flex flex-col">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
