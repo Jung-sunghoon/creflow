@@ -10,6 +10,7 @@ import { Button } from '@/shared/components/ui/button'
 import { IncomeCard, CampaignCard } from '../components/IncomeCard'
 import { useIncomes, useCampaigns, useUpdateCampaignStatus, useDeleteIncome, useDeleteCampaign } from '../hooks/useIncome'
 import { formatCurrency } from '@/shared/lib/calculations'
+import { AdBanner } from '@/shared/components/common'
 
 export function IncomeListView() {
   const router = useRouter()
@@ -133,6 +134,11 @@ export function IncomeListView() {
             )}
           </>
         )}
+      </div>
+
+      {/* 광고 배너 */}
+      <div className="px-4 pb-4">
+        <AdBanner slot="1952104824" />
       </div>
     </main>
   )

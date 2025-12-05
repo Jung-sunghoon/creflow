@@ -9,6 +9,7 @@ import { IncomeBreakdown } from '../components/IncomeBreakdown'
 import { ExpenseBreakdown } from '../components/ExpenseBreakdown'
 import { useAnnualReport } from '../hooks/useReport'
 import { toast } from 'sonner'
+import { AdBanner } from '@/shared/components/common'
 
 export function ReportView() {
   const currentYear = new Date().getFullYear()
@@ -95,6 +96,11 @@ export function ReportView() {
             데이터를 불러올 수 없습니다
           </div>
         )}
+      </div>
+
+      {/* 광고 배너 */}
+      <div className="px-4 pb-4">
+        <AdBanner slot="7012859813" />
       </div>
     </main>
   )

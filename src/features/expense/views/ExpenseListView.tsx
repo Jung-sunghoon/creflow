@@ -10,6 +10,7 @@ import { Button } from '@/shared/components/ui/button'
 import { ExpenseCard } from '../components/ExpenseCard'
 import { useExpenses, useUpdateExpenseStatus, useDeleteExpense } from '../hooks/useExpense'
 import { formatCurrency } from '@/shared/lib/calculations'
+import { AdBanner } from '@/shared/components/common'
 
 export function ExpenseListView() {
   const router = useRouter()
@@ -131,6 +132,11 @@ export function ExpenseListView() {
             )}
           </>
         )}
+      </div>
+
+      {/* 광고 배너 */}
+      <div className="px-4 pb-4">
+        <AdBanner slot="7907957325" />
       </div>
     </main>
   )

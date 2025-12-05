@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Toaster } from '@/shared/components/ui/sonner'
 import { QueryProvider } from './providers'
 import './globals.css'
@@ -65,6 +66,12 @@ export default function RootLayout({
           {children}
           <Toaster />
         </QueryProvider>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1792004874930613"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
