@@ -1,4 +1,3 @@
-import { createClient } from '@/shared/lib/supabase/client'
 import type { Feedback, FeedbackType } from '@/shared/types'
 
 export interface FeedbackFormData {
@@ -8,22 +7,21 @@ export interface FeedbackFormData {
 }
 
 export async function submitFeedback(
-  userId: string | null,
+  _userId: string | null,
   data: FeedbackFormData
 ): Promise<Feedback> {
-  const supabase = createClient()
+  const response = await fetch('/api/feedback', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
 
-  const { data: feedback, error } = await supabase
-    .from('feedbacks')
-    .insert({
-      user_id: userId,
-      type: data.type,
-      content: data.content,
-      email: data.email,
-    })
-    .select()
-    .single()
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error || '피드백 전송에 실패했어요')
+  }
 
-  if (error) throw error
-  return feedback
+  return response.json()
 }
