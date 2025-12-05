@@ -70,26 +70,34 @@ describe('IncomeCard', () => {
     expect(handleEdit).toHaveBeenCalledTimes(1)
   })
 
-  it('should call onDelete when delete confirmed', () => {
+  it('should call onDelete when delete confirmed', async () => {
     const handleDelete = vi.fn()
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
 
     render(<IncomeCard income={mockIncome} onDelete={handleDelete} />)
 
+    // 삭제 버튼(트리거) 클릭하여 다이얼로그 열기
     const deleteButton = screen.getAllByRole('button')[1]
     fireEvent.click(deleteButton)
+
+    // 다이얼로그의 "삭제" 확인 버튼 클릭
+    const confirmButton = await screen.findByRole('button', { name: '삭제' })
+    fireEvent.click(confirmButton)
 
     expect(handleDelete).toHaveBeenCalledTimes(1)
   })
 
-  it('should not call onDelete when delete cancelled', () => {
+  it('should not call onDelete when delete cancelled', async () => {
     const handleDelete = vi.fn()
-    vi.spyOn(window, 'confirm').mockReturnValue(false)
 
     render(<IncomeCard income={mockIncome} onDelete={handleDelete} />)
 
+    // 삭제 버튼(트리거) 클릭하여 다이얼로그 열기
     const deleteButton = screen.getAllByRole('button')[1]
     fireEvent.click(deleteButton)
+
+    // 다이얼로그의 "취소" 버튼 클릭
+    const cancelButton = await screen.findByRole('button', { name: '취소' })
+    fireEvent.click(cancelButton)
 
     expect(handleDelete).not.toHaveBeenCalled()
   })
@@ -169,14 +177,18 @@ describe('CampaignCard', () => {
     expect(handleEdit).toHaveBeenCalledTimes(1)
   })
 
-  it('should call onDelete when delete confirmed', () => {
+  it('should call onDelete when delete confirmed', async () => {
     const handleDelete = vi.fn()
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
 
     render(<CampaignCard campaign={mockCampaign} onDelete={handleDelete} />)
 
+    // 삭제 버튼(트리거) 클릭하여 다이얼로그 열기
     const deleteButton = screen.getAllByRole('button')[1]
     fireEvent.click(deleteButton)
+
+    // 다이얼로그의 "삭제" 확인 버튼 클릭
+    const confirmButton = await screen.findByRole('button', { name: '삭제' })
+    fireEvent.click(confirmButton)
 
     expect(handleDelete).toHaveBeenCalledTimes(1)
   })
