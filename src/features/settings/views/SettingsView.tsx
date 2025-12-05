@@ -77,7 +77,7 @@ export function SettingsView() {
           </Card>
         </div>
 
-        {/* 후원 */}
+        {/* 후원 - 임시 주석처리
         <div className="space-y-4">
           <h2 className="text-base font-semibold">개발자 후원</h2>
           <Card className="p-4 bg-card border-0 shadow-sm">
@@ -97,6 +97,7 @@ export function SettingsView() {
             </a>
           </Card>
         </div>
+        */}
 
         {/* 앱 정보 */}
         <div className="text-center text-sm text-muted-foreground pt-4">
