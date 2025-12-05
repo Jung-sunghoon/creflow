@@ -16,7 +16,7 @@ export function SideNav() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 h-screen bg-white border-r border-neutral-200 fixed left-0 top-0">
+    <aside className="hidden lg:flex flex-col w-60 h-screen bg-background border-r border-border fixed left-0 top-0">
       {/* 로고 */}
       <div className="h-16 flex items-center px-6 border-b border-neutral-100">
         <Link href="/" className="text-xl font-bold text-neutral-900 cursor-pointer">

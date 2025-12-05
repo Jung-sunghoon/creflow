@@ -32,7 +32,9 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
   const [isPaid, setIsPaid] = useState(campaign?.is_paid || false)
   const [memo, setMemo] = useState('')
 
-  const canSubmit = brandName && amount && paymentDate
+  const numAmount = Number(amount)
+  const isValidAmount = amount && numAmount > 0 && numAmount <= 1000000000
+  const canSubmit = brandName && isValidAmount && paymentDate
   const isPending = createIncome.isPending || updateCampaign.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -83,6 +85,7 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
           value={brandName}
           onChange={(e) => setBrandName(e.target.value)}
           placeholder="브랜드명을 입력하세요"
+          maxLength={50}
         />
       </div>
 
@@ -97,14 +100,21 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0"
             className="pr-8"
+            min="1"
+            max="1000000000"
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
             원
           </span>
         </div>
-        {amount && (
+        {amount && numAmount > 0 && numAmount <= 1000000000 && (
           <p className="text-sm text-muted-foreground">
-            {formatCurrency(Number(amount))}
+            {formatCurrency(numAmount)}
+          </p>
+        )}
+        {amount && (numAmount <= 0 || numAmount > 1000000000) && (
+          <p className="text-sm text-destructive">
+            1원 이상 10억원 이하로 입력해주세요
           </p>
         )}
       </div>
@@ -134,6 +144,7 @@ export function CampaignForm({ campaign }: CampaignFormProps) {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="메모를 입력하세요"
+            maxLength={100}
           />
         </div>
       )}

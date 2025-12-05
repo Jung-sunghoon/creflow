@@ -154,7 +154,7 @@ export function OnboardingView() {
   const canGoNext = step === 'platform' && selectedPlatforms.length > 0
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* 진행 바 */}
       <div className="px-4 py-3">
         <div className="h-1 bg-muted rounded-full overflow-hidden">

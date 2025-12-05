@@ -10,7 +10,7 @@ import { ExpenseBreakdown } from '../components/ExpenseBreakdown'
 import { useAnnualReport } from '../hooks/useReport'
 import { toast } from 'sonner'
 // import { AdBanner } from '@/shared/components/common'
-import { CoupangBanner } from '@/shared/components/common'
+import { CoupangBanner, LoadingSpinner } from '@/shared/components/common'
 
 export function ReportView() {
   const currentYear = new Date().getFullYear()
@@ -51,7 +51,7 @@ export function ReportView() {
   }
 
   return (
-    <main className="min-h-screen bg-background" aria-label="연간 리포트">
+    <main className="min-h-screen bg-background flex flex-col" aria-label="연간 리포트">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
@@ -88,7 +88,7 @@ export function ReportView() {
       <div className="px-4 py-6 space-y-8">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner />
           </div>
         ) : report ? (
           <>
@@ -105,7 +105,7 @@ export function ReportView() {
       </div>
 
       {/* 쿠팡 파트너스 배너 */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-4 mt-auto">
         <CoupangBanner />
         {/* <AdBanner slot="7012859813" /> */}
       </div>

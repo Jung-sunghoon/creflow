@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export function Header({ title = 'CreFlow', showSettings = true }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-neutral-100">
+    <header className="sticky top-0 z-40 bg-background border-b border-border">
       <div className="mx-auto max-w-[480px] h-14 px-4 flex items-center justify-between">
         <h1 className="text-lg font-bold text-neutral-900">{title}</h1>
 

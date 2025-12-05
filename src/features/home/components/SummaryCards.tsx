@@ -27,7 +27,7 @@ function SummaryCard({ type, amount, changeRate }: SummaryCardProps) {
 
   return (
     <Link href={isIncome ? '/income' : '/expense'} className="cursor-pointer">
-      <Card className="p-4 bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
+      <Card className="p-4 bg-card border-0 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center gap-3">
           <div
             className={cn(

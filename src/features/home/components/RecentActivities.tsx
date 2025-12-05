@@ -18,7 +18,7 @@ export function RecentActivities({ activities, isLoading }: RecentActivitiesProp
     return (
       <div className="space-y-3">
         <h2 className="text-sm font-medium text-neutral-700">최근 활동</h2>
-        <Card className="p-4 bg-white border-0 shadow-sm">
+        <Card className="p-4 bg-card border-0 shadow-sm">
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-center gap-3 animate-pulse">
@@ -40,7 +40,7 @@ export function RecentActivities({ activities, isLoading }: RecentActivitiesProp
     return (
       <div className="space-y-3">
         <h2 className="text-sm font-medium text-neutral-700">최근 활동</h2>
-        <Card className="p-6 bg-white border-0 shadow-sm">
+        <Card className="p-6 bg-card border-0 shadow-sm">
           <p className="text-sm text-neutral-500 text-center">
             아직 기록이 없어요
           </p>
@@ -52,7 +52,7 @@ export function RecentActivities({ activities, isLoading }: RecentActivitiesProp
   return (
     <section className="space-y-3" aria-labelledby="recent-activities-title">
       <h2 id="recent-activities-title" className="text-sm font-medium text-neutral-700">최근 활동</h2>
-      <Card className="bg-white border-0 shadow-sm divide-y divide-neutral-100">
+      <Card className="bg-card border-0 shadow-sm divide-y divide-border">
         {activities.map((activity) => (
           <div key={`${activity.type}-${activity.id}`} className="flex items-center gap-3 p-4">
             <div

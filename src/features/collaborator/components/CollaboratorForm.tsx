@@ -82,6 +82,7 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="협력자 이름"
+          maxLength={30}
         />
       </div>
 
@@ -93,6 +94,7 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
           value={role}
           onChange={(e) => setRole(e.target.value)}
           placeholder="예: 편집자, 디자이너, 매니저"
+          maxLength={30}
         />
       </div>
 
@@ -125,6 +127,8 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
               onChange={(e) => setBaseAmount(e.target.value)}
               placeholder="0"
               className="pr-8"
+              min="1"
+              max="1000000000"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
               원
@@ -163,6 +167,7 @@ export function CollaboratorForm({ onSuccess }: CollaboratorFormProps) {
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           placeholder="메모를 입력하세요"
+          maxLength={100}
         />
       </div>
 

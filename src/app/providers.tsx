@@ -1,10 +1,19 @@
 'use client'
 
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export function QueryProvider({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <QueryProvider>{children}</QueryProvider>
+    </ThemeProvider>
+  )
+}
+
+function QueryProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({

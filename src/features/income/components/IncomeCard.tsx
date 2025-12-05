@@ -22,7 +22,7 @@ export function IncomeCard({ income, onEdit, onDelete }: IncomeCardProps) {
   const displayDate = format(new Date(income.date), 'M/d', { locale: ko })
 
   return (
-    <Card className="p-4 bg-white border-0 shadow-sm group">
+    <Card className="p-4 bg-card border-0 shadow-sm group">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
@@ -88,7 +88,7 @@ export function CampaignCard({ campaign, onTogglePaid, onEdit, onDelete }: Campa
     : '-'
 
   return (
-    <Card className="p-4 bg-white border-0 shadow-sm group">
+    <Card className="p-4 bg-card border-0 shadow-sm group">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">

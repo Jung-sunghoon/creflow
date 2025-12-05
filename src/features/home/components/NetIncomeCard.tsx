@@ -20,10 +20,10 @@ export function NetIncomeCard({ month, netIncome, changeRate }: NetIncomeCardPro
   // 빈 상태
   if (!hasData) {
     return (
-      <Card className="p-6 bg-white border-0 shadow-sm">
+      <Card className="p-6 bg-card border-0 shadow-sm">
         <div className="text-center lg:text-left space-y-3">
-          <p className="text-sm text-neutral-500">{month} 순수익</p>
-          <p className="text-3xl font-bold text-neutral-300">₩0</p>
+          <p className="text-sm text-muted-foreground">{month} 순수익</p>
+          <p className="text-3xl font-bold text-muted-foreground/50">₩0</p>
           <div className="pt-2">
             <p className="text-sm text-neutral-500 mb-3">
               아직 이번 달 수익이 없어요
@@ -41,11 +41,11 @@ export function NetIncomeCard({ month, netIncome, changeRate }: NetIncomeCardPro
   }
 
   return (
-    <Card className="p-6 bg-white border-0 shadow-sm">
+    <Card className="p-6 bg-card border-0 shadow-sm">
       <div className="text-center lg:text-left space-y-2">
-        <p className="text-sm text-neutral-500">{month} 순수익</p>
+        <p className="text-sm text-muted-foreground">{month} 순수익</p>
         <div className="lg:flex lg:items-baseline lg:gap-4">
-          <p className="text-3xl font-bold text-neutral-900">
+          <p className="text-2xl lg:text-3xl font-bold text-foreground truncate">
             {formatCurrency(netIncome)}
           </p>
           <div

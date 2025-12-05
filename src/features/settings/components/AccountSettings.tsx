@@ -29,7 +29,7 @@ export function AccountSettings({ user }: AccountSettingsProps) {
     <div className="space-y-4">
       <h2 className="text-base font-semibold">계정</h2>
 
-      <Card className="p-4 bg-white border-0 shadow-sm">
+      <Card className="p-4 bg-card border-0 shadow-sm">
         <div className="flex items-center gap-3">
           {user.avatar_url ? (
             <img

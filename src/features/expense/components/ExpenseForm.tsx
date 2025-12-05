@@ -47,7 +47,9 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
   const [memo, setMemo] = useState(expense?.memo || '')
 
   const isCollaboratorType = type === 'collaborator'
-  const canSubmit = type && amount && date && (isCollaboratorType ? collaboratorId : description)
+  const numAmount = Number(amount)
+  const isValidAmount = amount && numAmount > 0 && numAmount <= 1000000000
+  const canSubmit = type && isValidAmount && date && (isCollaboratorType ? collaboratorId : description)
   const isPending = createExpense.isPending || updateExpense.isPending
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -135,6 +137,7 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="지출 내용을 입력하세요"
+            maxLength={50}
           />
         </div>
       )}
@@ -150,14 +153,21 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0"
             className="pr-8"
+            min="1"
+            max="1000000000"
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
             원
           </span>
         </div>
-        {amount && (
+        {amount && numAmount > 0 && numAmount <= 1000000000 && (
           <p className="text-sm text-muted-foreground">
-            {formatCurrency(Number(amount))}
+            {formatCurrency(numAmount)}
+          </p>
+        )}
+        {amount && (numAmount <= 0 || numAmount > 1000000000) && (
+          <p className="text-sm text-destructive">
+            1원 이상 10억원 이하로 입력해주세요
           </p>
         )}
       </div>
@@ -186,6 +196,7 @@ export function ExpenseForm({ expense }: ExpenseFormProps) {
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           placeholder="메모를 입력하세요"
+          maxLength={100}
         />
       </div>
 

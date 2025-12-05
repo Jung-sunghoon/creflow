@@ -14,23 +14,23 @@ export function AnnualSummary({ report }: AnnualSummaryProps) {
       <h2 className="text-lg font-semibold">{report.year}년 연간 요약</h2>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
-        <Card className="p-4 bg-white border-0 shadow-sm">
+        <Card className="p-4 bg-card border-0 shadow-sm">
           <p className="text-xs text-muted-foreground mb-1">총 수익</p>
-          <p className="text-lg font-bold text-accent">
+          <p className="text-base lg:text-lg font-bold text-accent truncate">
             {formatCurrency(report.totalIncome)}
           </p>
         </Card>
 
-        <Card className="p-4 bg-white border-0 shadow-sm">
+        <Card className="p-4 bg-card border-0 shadow-sm">
           <p className="text-xs text-muted-foreground mb-1">총 지출</p>
-          <p className="text-lg font-bold text-destructive">
+          <p className="text-base lg:text-lg font-bold text-destructive truncate">
             {formatCurrency(report.totalExpense)}
           </p>
         </Card>
 
-        <Card className="p-4 bg-white border-0 shadow-sm">
+        <Card className="p-4 bg-card border-0 shadow-sm">
           <p className="text-xs text-muted-foreground mb-1">순수익</p>
-          <p className={`text-lg font-bold ${report.netIncome >= 0 ? 'text-foreground' : 'text-destructive'}`}>
+          <p className={`text-base lg:text-lg font-bold truncate ${report.netIncome >= 0 ? 'text-foreground' : 'text-destructive'}`}>
             {formatCurrency(report.netIncome)}
           </p>
         </Card>

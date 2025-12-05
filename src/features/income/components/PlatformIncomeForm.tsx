@@ -256,6 +256,8 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
                 onChange={(e) => setYoutubeAmount(e.target.value)}
                 placeholder="0"
                 className="pr-8"
+                min="1"
+                max="1000000000"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                 원
@@ -314,6 +316,8 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
                 onChange={(e) => setSoopBalloonCount(e.target.value)}
                 placeholder="0"
                 className="pr-8"
+                min="1"
+                max="1000000000"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                 개
@@ -376,6 +380,8 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
                 onChange={(e) => setChzzkCheeseCount(e.target.value)}
                 placeholder="0"
                 className="pr-8"
+                min="1"
+                max="1000000000"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                 개
@@ -421,6 +427,8 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
               onChange={(e) => setOtherAmount(e.target.value)}
               placeholder="0"
               className="pr-8"
+              min="1"
+              max="1000000000"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
               원
@@ -455,6 +463,7 @@ export function PlatformIncomeForm({ income }: PlatformIncomeFormProps) {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="메모를 입력하세요"
+            maxLength={100}
           />
         </div>
       )}

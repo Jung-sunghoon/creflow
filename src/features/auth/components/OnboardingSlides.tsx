@@ -21,7 +21,7 @@ export function IncomeListSlide() {
   ]
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-4 lg:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+    <div className="w-full h-full bg-card rounded-2xl p-4 lg:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
       <p className="text-sm text-neutral-500 mb-2 lg:mb-3">12월 수익</p>
       <div className="space-y-1.5 lg:space-y-2.5">
         {incomes.map((income, index) => (
@@ -62,7 +62,7 @@ export function CollaboratorSlide() {
   ]
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
+    <div className="w-full h-full bg-card rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden">
       <p className="text-sm text-neutral-500 mb-3">팀 정산</p>
       <div className="space-y-3">
         {expenses.map((expense, index) => (
@@ -123,7 +123,7 @@ export function DashboardSlide() {
   }
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col justify-center">
+    <div className="w-full h-full bg-card rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col justify-center">
       <div className={`text-center transition-all duration-500 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
         <p className="text-sm text-neutral-500 mb-2">12월 순수익</p>
         <p className="text-4xl lg:text-5xl font-bold text-neutral-900">
@@ -160,7 +160,7 @@ export function LoginSlide() {
   }, [])
 
   return (
-    <div className="w-full h-full bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-card rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col items-center justify-center">
       <div
         className={`w-20 h-20 lg:w-24 lg:h-24 bg-blue-600 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500 ${
           visible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'

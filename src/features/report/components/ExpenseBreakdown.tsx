@@ -18,7 +18,7 @@ export function ExpenseBreakdown({ expenseByCollaborator }: ExpenseBreakdownProp
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">협력자별 지출</h2>
 
-      <Card className="p-4 bg-white border-0 shadow-sm">
+      <Card className="p-4 bg-card border-0 shadow-sm">
         <div className="space-y-3">
           {expenseByCollaborator.map(({ name, amount }) => {
             const percentage = Math.round((amount / total) * 100)

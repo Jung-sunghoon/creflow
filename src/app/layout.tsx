@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import { Toaster } from '@/shared/components/ui/sonner'
-import { QueryProvider } from './providers'
+import { Providers } from './providers'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -62,10 +62,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <QueryProvider>
+        <Providers>
           {children}
           <Toaster />
-        </QueryProvider>
+        </Providers>
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1792004874930613"

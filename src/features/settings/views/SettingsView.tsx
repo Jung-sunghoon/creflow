@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Card } from '@/shared/components/ui/card'
+import { ThemeToggle, LoadingSpinner } from '@/shared/components/common'
 import { AccountSettings } from '../components/AccountSettings'
 import { CollaboratorSettings } from '../components/CollaboratorSettings'
 import { FeedbackForm } from '../components/FeedbackForm'
@@ -38,7 +39,7 @@ export function SettingsView() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <LoadingSpinner />
       </div>
     )
   }
@@ -57,13 +58,21 @@ export function SettingsView() {
         {/* 계정 */}
         {user && <AccountSettings user={user} />}
 
+        {/* 테마 설정 */}
+        <div className="space-y-4">
+          <h2 className="text-base font-semibold">테마</h2>
+          <Card className="p-4 bg-card border-0 shadow-sm">
+            <ThemeToggle />
+          </Card>
+        </div>
+
         {/* 협력자 관리 */}
         <CollaboratorSettings />
 
         {/* 피드백 */}
         <div className="space-y-4">
           <h2 className="text-base font-semibold">피드백</h2>
-          <Card className="p-4 bg-white border-0 shadow-sm">
+          <Card className="p-4 bg-card border-0 shadow-sm">
             <FeedbackForm />
           </Card>
         </div>
@@ -71,7 +80,7 @@ export function SettingsView() {
         {/* 후원 */}
         <div className="space-y-4">
           <h2 className="text-base font-semibold">개발자 후원</h2>
-          <Card className="p-4 bg-white border-0 shadow-sm">
+          <Card className="p-4 bg-card border-0 shadow-sm">
             <p className="text-sm text-muted-foreground mb-3">
               CreFlow가 도움이 되셨다면 커피 한 잔 사주세요 ☕
             </p>

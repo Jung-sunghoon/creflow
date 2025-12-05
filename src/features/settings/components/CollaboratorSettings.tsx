@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
 import { Card } from '@/shared/components/ui/card'
+import { LoadingSpinner } from '@/shared/components/common'
 import { CollaboratorCard } from '@/features/collaborator/components/CollaboratorCard'
 import { CollaboratorForm } from '@/features/collaborator/components/CollaboratorForm'
 import { useCollaborators, useDeleteCollaborator } from '@/features/collaborator/hooks/useCollaborator'
@@ -39,14 +40,14 @@ export function CollaboratorSettings() {
       </div>
 
       {showForm && (
-        <Card className="p-4 bg-white border-0 shadow-sm">
+        <Card className="p-4 bg-card border-0 shadow-sm">
           <CollaboratorForm onSuccess={() => setShowForm(false)} />
         </Card>
       )}
 
       {isLoading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <LoadingSpinner />
         </div>
       ) : collaborators.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-4">

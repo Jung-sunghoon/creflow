@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
+import { LoadingSpinner } from '@/shared/components/common'
 import { PlatformIncomeForm } from '../components/PlatformIncomeForm'
 import { useIncome } from '../hooks/useIncome'
 
@@ -17,7 +18,7 @@ export function IncomeEditView({ incomeId }: IncomeEditViewProps) {
     return (
       <div className="min-h-screen bg-background">
         <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <LoadingSpinner />
         </div>
       </div>
     )

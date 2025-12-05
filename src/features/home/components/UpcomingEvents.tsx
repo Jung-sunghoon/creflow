@@ -27,7 +27,7 @@ export function UpcomingEvents({ events, isLoading = false }: UpcomingEventsProp
           <Calendar className="w-4 h-4" />
           다가오는 일정
         </h2>
-        <Card className="bg-white border-0 shadow-sm divide-y divide-neutral-100">
+        <Card className="bg-card border-0 shadow-sm divide-y divide-border">
           {[1, 2].map((i) => (
             <div key={i} className="flex items-center gap-3 p-4">
               <Skeleton className="h-6 w-12 rounded" />
@@ -47,7 +47,7 @@ export function UpcomingEvents({ events, isLoading = false }: UpcomingEventsProp
           <Calendar className="w-4 h-4" />
           다가오는 일정
         </h2>
-        <Card className="bg-white border-0 shadow-sm p-6">
+        <Card className="bg-card border-0 shadow-sm p-6">
           <div className="text-center text-sm text-neutral-500">
             <p className="mb-1">📅 예정된 일정이 없어요</p>
             <p className="text-xs text-neutral-400">
@@ -66,7 +66,7 @@ export function UpcomingEvents({ events, isLoading = false }: UpcomingEventsProp
         다가오는 일정
       </h2>
 
-      <Card className="bg-white border-0 shadow-sm divide-y divide-neutral-100">
+      <Card className="bg-card border-0 shadow-sm divide-y divide-border">
         {events.map((event) => (
           <div
             key={event.id}

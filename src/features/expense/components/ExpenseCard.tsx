@@ -22,7 +22,7 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
   const isCollaborator = expense.type === 'collaborator'
 
   return (
-    <Card className="p-4 bg-white border-0 shadow-sm group">
+    <Card className="p-4 bg-card border-0 shadow-sm group">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${

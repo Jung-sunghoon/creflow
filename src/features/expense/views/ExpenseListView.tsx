@@ -11,7 +11,7 @@ import { ExpenseCard } from '../components/ExpenseCard'
 import { useExpenses, useUpdateExpenseStatus, useDeleteExpense } from '../hooks/useExpense'
 import { formatCurrency } from '@/shared/lib/calculations'
 // import { AdBanner } from '@/shared/components/common'
-import { CoupangBanner } from '@/shared/components/common'
+import { CoupangBanner, LoadingSpinner } from '@/shared/components/common'
 
 export function ExpenseListView() {
   const router = useRouter()
@@ -36,7 +36,7 @@ export function ExpenseListView() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background flex flex-col">
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
@@ -73,7 +73,7 @@ export function ExpenseListView() {
       {/* 총 지출 요약 */}
       <div className="px-4 py-6 bg-neutral-50">
         <p className="text-sm text-muted-foreground mb-1">이번 달 총 지출</p>
-        <p className="text-2xl font-bold text-destructive">-{formatCurrency(totalExpense)}</p>
+        <p className="text-xl lg:text-2xl font-bold text-destructive truncate">-{formatCurrency(totalExpense)}</p>
         <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
           <span>인건비 {formatCurrency(totalCollaboratorExpense)}</span>
           <span>기타 {formatCurrency(totalOtherExpense)}</span>
@@ -84,7 +84,7 @@ export function ExpenseListView() {
       <div className="px-4 py-4 space-y-6">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner />
           </div>
         ) : (
           <>
@@ -144,7 +144,7 @@ export function ExpenseListView() {
       </div>
 
       {/* 쿠팡 파트너스 배너 */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-4 mt-auto">
         <CoupangBanner />
         {/* <AdBanner slot="7907957325" /> */}
       </div>

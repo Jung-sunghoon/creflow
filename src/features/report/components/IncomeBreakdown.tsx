@@ -24,7 +24,7 @@ export function IncomeBreakdown({ incomeBySource }: IncomeBreakdownProps) {
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">수익 구성</h2>
 
-      <Card className="p-4 bg-white border-0 shadow-sm">
+      <Card className="p-4 bg-card border-0 shadow-sm">
         <div className="space-y-3">
           {entries.map(([source, amount]) => {
             const label = source === 'ad' ? '광고/협찬' : PLATFORMS[source as PlatformType]?.label || source

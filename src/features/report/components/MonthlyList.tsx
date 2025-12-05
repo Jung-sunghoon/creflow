@@ -32,7 +32,7 @@ export function MonthlyList({ summaries }: MonthlyListProps) {
           const monthNum = parseInt(month, 10)
 
           return (
-            <Card key={summary.month} className="p-4 bg-white border-0 shadow-sm">
+            <Card key={summary.month} className="p-4 bg-card border-0 shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">{monthNum}월</p>
