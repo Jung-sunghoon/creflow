@@ -33,12 +33,19 @@ export function IncomeBreakdown({ incomeBySource }: IncomeBreakdownProps) {
             return (
               <div key={source}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm">{label}</span>
+                  <span className="text-sm" id={`income-label-${source}`}>{label}</span>
                   <span className="text-sm font-medium">{formatCurrency(amount)}</span>
                 </div>
-                <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+                <div
+                  className="h-2 bg-neutral-100 rounded-full overflow-hidden"
+                  role="progressbar"
+                  aria-valuenow={percentage}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-labelledby={`income-label-${source}`}
+                >
                   <div
-                    className="h-full bg-accent rounded-full"
+                    className="h-full bg-primary rounded-full transition-all"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>

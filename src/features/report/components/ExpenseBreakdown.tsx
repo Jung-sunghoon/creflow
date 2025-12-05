@@ -26,12 +26,19 @@ export function ExpenseBreakdown({ expenseByCollaborator }: ExpenseBreakdownProp
             return (
               <div key={name}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm">{name}</span>
+                  <span className="text-sm" id={`expense-label-${name}`}>{name}</span>
                   <span className="text-sm font-medium">{formatCurrency(amount)}</span>
                 </div>
-                <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+                <div
+                  className="h-2 bg-neutral-100 rounded-full overflow-hidden"
+                  role="progressbar"
+                  aria-valuenow={percentage}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-labelledby={`expense-label-${name}`}
+                >
                   <div
-                    className="h-full bg-purple-500 rounded-full"
+                    className="h-full bg-purple-500 rounded-full transition-all"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>

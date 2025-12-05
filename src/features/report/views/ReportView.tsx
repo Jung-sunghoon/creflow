@@ -9,7 +9,8 @@ import { IncomeBreakdown } from '../components/IncomeBreakdown'
 import { ExpenseBreakdown } from '../components/ExpenseBreakdown'
 import { useAnnualReport } from '../hooks/useReport'
 import { toast } from 'sonner'
-import { AdBanner } from '@/shared/components/common'
+// import { AdBanner } from '@/shared/components/common'
+import { CoupangBanner } from '@/shared/components/common'
 
 export function ReportView() {
   const currentYear = new Date().getFullYear()
@@ -55,25 +56,30 @@ export function ReportView() {
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center justify-between px-4 py-3">
           <h1 className="text-lg font-semibold">연간 리포트</h1>
-          <Button size="sm" variant="ghost" onClick={handleDownloadPDF}>
-            <Download className="w-5 h-5" />
+          <Button size="sm" variant="ghost" onClick={handleDownloadPDF} aria-label="PDF 다운로드">
+            <Download className="w-5 h-5" aria-hidden="true" />
           </Button>
         </div>
 
         {/* 연도 선택 */}
         <div className="flex items-center justify-center gap-4 py-3">
-          <button onClick={handlePrevYear} className="p-1 cursor-pointer">
-            <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+          <button
+            onClick={handlePrevYear}
+            className="p-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label="이전 연도"
+          >
+            <ChevronLeft className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
           </button>
           <span className="text-base font-medium">{year}년</span>
           <button
             onClick={handleNextYear}
-            className="p-1 cursor-pointer disabled:cursor-not-allowed"
+            className="p-1 cursor-pointer disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded disabled:opacity-50"
             disabled={year >= currentYear}
+            aria-label="다음 연도"
           >
             <ChevronRight className={`w-5 h-5 ${
               year >= currentYear ? 'text-neutral-200' : 'text-muted-foreground'
-            }`} />
+            }`} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -98,9 +104,10 @@ export function ReportView() {
         )}
       </div>
 
-      {/* 광고 배너 */}
+      {/* 쿠팡 파트너스 배너 */}
       <div className="px-4 pb-4">
-        <AdBanner slot="7012859813" />
+        <CoupangBanner />
+        {/* <AdBanner slot="7012859813" /> */}
       </div>
     </main>
   )

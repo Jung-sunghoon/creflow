@@ -12,8 +12,12 @@ export function ExpenseFormView() {
       {/* 헤더 */}
       <div className="sticky top-0 z-10 bg-background border-b">
         <div className="flex items-center px-4 py-3">
-          <button onClick={() => router.back()} className="mr-3 cursor-pointer">
-            <ChevronLeft className="w-6 h-6" />
+          <button
+            onClick={() => router.back()}
+            className="mr-3 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label="뒤로 가기"
+          >
+            <ChevronLeft className="w-6 h-6" aria-hidden="true" />
           </button>
           <h1 className="text-lg font-semibold">지출 등록</h1>
         </div>

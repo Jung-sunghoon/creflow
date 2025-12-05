@@ -10,7 +10,8 @@ import { Button } from '@/shared/components/ui/button'
 import { IncomeCard, CampaignCard } from '../components/IncomeCard'
 import { useIncomes, useCampaigns, useUpdateCampaignStatus, useDeleteIncome, useDeleteCampaign } from '../hooks/useIncome'
 import { formatCurrency } from '@/shared/lib/calculations'
-import { AdBanner } from '@/shared/components/common'
+// import { AdBanner } from '@/shared/components/common'
+import { CoupangBanner } from '@/shared/components/common'
 
 export function IncomeListView() {
   const router = useRouter()
@@ -44,22 +45,30 @@ export function IncomeListView() {
         <div className="flex items-center justify-between px-4 py-3">
           <h1 className="text-lg font-semibold">수익 관리</h1>
           <Link href="/income/new">
-            <Button size="sm" variant="ghost">
-              <Plus className="w-5 h-5" />
+            <Button size="sm" variant="ghost" aria-label="수익 등록">
+              <Plus className="w-5 h-5" aria-hidden="true" />
             </Button>
           </Link>
         </div>
 
         {/* 월 선택 */}
         <div className="flex items-center justify-center gap-4 py-3">
-          <button onClick={handlePrevMonth} className="p-1 cursor-pointer">
-            <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+          <button
+            onClick={handlePrevMonth}
+            className="p-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label="이전 달"
+          >
+            <ChevronLeft className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
           </button>
           <span className="text-base font-medium">
             {format(currentMonth, 'yyyy년 M월', { locale: ko })}
           </span>
-          <button onClick={handleNextMonth} className="p-1 cursor-pointer">
-            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+          <button
+            onClick={handleNextMonth}
+            className="p-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label="다음 달"
+          >
+            <ChevronRight className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -136,9 +145,10 @@ export function IncomeListView() {
         )}
       </div>
 
-      {/* 광고 배너 */}
+      {/* 쿠팡 파트너스 배너 */}
       <div className="px-4 pb-4">
-        <AdBanner slot="1952104824" />
+        <CoupangBanner />
+        {/* <AdBanner slot="1952104824" /> */}
       </div>
     </main>
   )

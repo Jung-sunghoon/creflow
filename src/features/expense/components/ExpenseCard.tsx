@@ -54,11 +54,11 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-muted-foreground hover:bg-neutral-100 hover:text-foreground"
+              className="h-8 w-8 text-muted-foreground hover:bg-neutral-100 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
               onClick={onEdit}
               aria-label="지출 수정"
             >
@@ -72,7 +72,7 @@ export function ExpenseCard({ expense, onTogglePaid, onEdit, onDelete }: Expense
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="지출 삭제"
               >
                 <Trash2 className="h-4 w-4" aria-hidden="true" />
